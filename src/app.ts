@@ -14,7 +14,6 @@ import { connectDB } from "./database/db.config"
   export const envMode = process.env.NODE_ENV?.trim() || 'DEVELOPMENT';
   const port = process.env.PORT || 3000;
   
-export const db = new PrismaClient();
   const app = express();
   
                                 

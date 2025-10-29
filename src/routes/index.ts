@@ -1,6 +1,8 @@
 import express from "express";
 import authRoute from "./auth.route";
-
+import plantRoute from "./plant.route";
+import shopRoute from "./shop.route"
+import lineRoute from "./line.route"
 
 const router = express.Router();
 
@@ -11,6 +13,9 @@ interface RouteItem {
 
 const defaultRoutes: RouteItem[] = [
   { path: "/auth", route: authRoute },
+  {path: "/plant", route: plantRoute},
+  {path: "/shop", route: shopRoute},
+  {path: "/line", route: lineRoute}
 ];
 
 defaultRoutes.forEach((route) => {

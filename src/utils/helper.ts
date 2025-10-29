@@ -1,64 +1,90 @@
-import { Response } from "express"
+import { Response } from "express";
 
 export const ResponseData = {
-    ResponseHelpers: {
-        SetSuccessResponse: function (data:any, res:Response, statusCode:number) {
-            let response = {
-                success: true,
-                data: data,
-                error: null,
-                status: statusCode
-            }
-            this.SetResponse(statusCode, response, res)
-        },
-        SetSuccessErrorResponse: function (data:any, res:Response, statusCode:number) {
-            let response = {
-                success: false,
-                data: [],
-                error: data,
-                status: statusCode
-            }
-            this.SetResponse(statusCode, response, res)
-        },
-        SetErrorResponse(errors:any, res:Response, statusCode:number) {
-            const response = {
-                success: false,
-                data: [],
-                error: errors,
-                statusCode:statusCode
-            }
-            this.SetResponse(500, response, res)
-        },
-        SetNotFoundResponse(errors:any, res:Response) {
-            const response = {
-                success: false,
-                data: [],
-                error: errors
-            }
-            this.SetResponse(404, response, res)
-        },
-        SetBadRequestResponse(errors:any, res:Response) {
-            const response = {
-                success: false,
-                data: [],
-                error: errors
-            }
-            this.SetResponse(401, response, res)
-        },
-        SetForbiddenResponse(errors:any, res:Response) {
-            const response = {
-                success: false,
-                data: [],
-                error: errors
-            }
-            this.SetResponse(403, response, res)
-        },
-        SetResponse: function (status:any, response:any, res:Response) {
-            // console.info('======================================================================')
-            // console.info(response)
-            // console.info('======================================================================')
-            res.status(status).json(response)
-            res.end()
-        }
+  ResponseHelpers: {
+    /**
+     * ✅ Send success response
+     */
+    SetSuccessResponse(data: any, res: Response, statusCode: number = 200): Response {
+      const response = {
+        success: true,
+        data,
+        error: null,
+        statusCode,
+      };
+      return this.SetResponse(statusCode, response, res);
     },
-}
+
+    /**
+     * ✅ Send failure response (custom message)
+     */
+    SetSuccessErrorResponse(error: any, res: Response, statusCode: number = 400): Response {
+      const response = {
+        success: false,
+        data: [],
+        error,
+        statusCode,
+      };
+      return this.SetResponse(statusCode, response, res);
+    },
+
+    /**
+     * ✅ Send server or validation error
+     */
+    SetErrorResponse(errors: any, res: Response, statusCode: number = 500): Response {
+      const response = {
+        success: false,
+        data: [],
+        error: errors,
+        statusCode,
+      };
+      return this.SetResponse(statusCode, response, res);
+    },
+
+    /**
+     * ✅ Not found
+     */
+    SetNotFoundResponse(error: any, res: Response): Response {
+      const response = {
+        success: false,
+        data: [],
+        error,
+        statusCode: 404,
+      };
+      return this.SetResponse(404, response, res);
+    },
+
+    /**
+     * ✅ Bad request
+     */
+    SetBadRequestResponse(error: any, res: Response): Response {
+      const response = {
+        success: false,
+        data: [],
+        error,
+        statusCode: 400,
+      };
+      return this.SetResponse(400, response, res);
+    },
+
+    /**
+     * ✅ Forbidden
+     */
+    SetForbiddenResponse(error: any, res: Response): Response {
+      const response = {
+        success: false,
+        data: [],
+        error,
+        statusCode: 403,
+      };
+      return this.SetResponse(403, response, res);
+    },
+
+    /**
+     * ✅ Base response sender
+     */
+    SetResponse(status: number, response: any, res: Response): Response {
+      return res.status(status).json(response);
+    },
+  },
+};

@@ -10,4 +10,7 @@ router.post("/plant-create",
 // validateSchema(SchemaValidation.BodySchema.PlantCreate),
 plantController.PlantController.createPlant)
 
+router.get("/get-all-plant",
+ plantController.PlantController.getAllplant)
+
 export default router;

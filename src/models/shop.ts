@@ -17,7 +17,7 @@ export class Shop extends Model<ShopAttributes, ShopCreationAttributes>
   implements ShopAttributes {
   public id!: string;
   public name!: string;
-public plantId?: string; 
+  public plantId?: string; 
 
 
 

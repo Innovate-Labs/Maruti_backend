@@ -16,12 +16,10 @@ export const connectDB = async () => {
     await import("../models/plant");
     await import("../models/shop");
     await import("../models/line");
-    await import("../models/associations"); // defines Plant.hasMany(Shop), etc.
+    await import("../models/associations"); 
 
     // 👇 Sync models (auto create/alter tables)
-    await sequelize.sync({ alter: true });
-
-      await sequelize.sync({ alter: true }); 
+    // await sequelize.sync({ alter: true });
   } catch (error) {
     console.error("❌ Unable to connect to database:", error);
   }

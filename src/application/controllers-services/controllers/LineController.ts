@@ -16,5 +16,13 @@ export const LineData = {
              return ResponseData.ResponseHelpers.SetErrorResponse("Error in data creating",res,StatusCode.BAD_REQUEST)
          }
          return ResponseData.ResponseHelpers.SetSuccessResponse(data,res,StatusCode.OK)
+    }),
+    getLineData: TryCatch(async(req:Request,res:Response,next:NextFunction)=>{
+           const data = await LineServices.LineServicesData.getLineData()
+        if(!data)
+         {
+             return ResponseData.ResponseHelpers.SetErrorResponse("Error in data creating",res,StatusCode.BAD_REQUEST)
+         }
+         return ResponseData.ResponseHelpers.SetSuccessResponse(data,res,StatusCode.OK)
     })
 }

@@ -5,7 +5,6 @@ import cors from 'cors'
 import { errorMiddleware, TryCatch } from "@/middlewares/error.js"
 import morgan from "morgan"
 import dotenv from "dotenv"
-import { PrismaClient } from "@prisma/client"
 import router from "./routes"
 import { connectDB } from "./database/db.config"
   
@@ -15,8 +14,6 @@ import { connectDB } from "./database/db.config"
   const port = process.env.PORT || 3000;
   
   const app = express();
-  
-                                
   
   
 app.use(

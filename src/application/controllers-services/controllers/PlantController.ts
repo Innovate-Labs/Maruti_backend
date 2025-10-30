@@ -16,5 +16,14 @@ export const PlantController = {
              return ResponseData.ResponseHelpers.SetErrorResponse("Error in data creating",res,StatusCode.BAD_REQUEST)
          }
          return ResponseData.ResponseHelpers.SetSuccessResponse(data,res,StatusCode.OK)
+    }),
+
+    getAllplant: TryCatch(async(req:Request,res:Response,next:NextFunction)=>{
+         const data = await PlantServices.PlantServicesData.GetPlantUser()
+         if(!data)
+         {
+             return ResponseData.ResponseHelpers.SetErrorResponse("Error in data creating",res,StatusCode.BAD_REQUEST)
+         }
+         return ResponseData.ResponseHelpers.SetSuccessResponse(data,res,StatusCode.OK)
     })
 }

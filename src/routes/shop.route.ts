@@ -1,5 +1,5 @@
 import { Router } from "express";
-import {   shopController } from "@/application/controllers-services/controllers";
+import { shopController } from "@/application/controllers-services/controllers";
 // import { SchemaValidation, validateSchema } from "@/middlewares/ValidationSchema/validateSchema";
 
 const router = Router();

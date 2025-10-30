@@ -10,4 +10,8 @@ router.post("/line-create",
 // validateSchema(SchemaValidation.BodySchema.PlantCreate),
 lineController.LineData.createLineData)
 
+router.get("/get-all-line",
+lineController.LineData.getLineData
+)
+
 export default router;

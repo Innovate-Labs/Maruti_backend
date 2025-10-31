@@ -65,14 +65,29 @@ export const SchemaValidation = {
     "string.guid": "Invalid plant ID format",
     "string.empty": "Plant ID is required",
   }),
-     shopId: Joi.string().uuid().required().messages({
-    "string.guid": "Invalid plant ID format",
-    "string.empty": "Plant ID is required",
-  }),
-    lineId: Joi.string().uuid().required().messages({
-    "string.guid": "Invalid plant ID format",
-    "string.empty": "Plant ID is required",
-  }),
+shopId: Joi.alternatives()
+    .try(
+      Joi.string().uuid(),
+      Joi.array().items(Joi.string().uuid()).min(1)
+    )
+    .required()
+    .messages({
+      "alternatives.match": "shopId must be a valid UUID or an array of UUIDs",
+      "string.guid": "Invalid shop ID format",
+      "array.min": "At least one shop ID is required",
+    }),
+
+  lineId: Joi.alternatives()
+    .try(
+      Joi.string().uuid(),
+      Joi.array().items(Joi.string().uuid()).min(1)
+    )
+    .required()
+    .messages({
+      "alternatives.match": "lineId must be a valid UUID or an array of UUIDs",
+      "string.guid": "Invalid line ID format",
+      "array.min": "At least one line ID is required",
+    }),
    
 
     })

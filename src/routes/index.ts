@@ -4,6 +4,7 @@ import plantRoute from "./plant.route";
 import shopRoute from "./shop.route"
 import lineRoute from "./line.route"
 import supervisorRoute from "./supervisor.route"
+import technicianRoute from "./technician.route"
 
 const router = express.Router();
 
@@ -17,7 +18,8 @@ const defaultRoutes: RouteItem[] = [
   {path: "/plant", route: plantRoute},
   {path: "/shop", route: shopRoute},
   {path: "/line", route: lineRoute},
-  {path: "/supervisor",route: supervisorRoute}
+  {path: "/supervisor",route: supervisorRoute},
+  {path:"/technician", route: technicianRoute}
 ];
 
 defaultRoutes.forEach((route) => {

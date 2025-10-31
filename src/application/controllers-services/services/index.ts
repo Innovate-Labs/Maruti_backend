@@ -3,11 +3,12 @@ import * as PlantServices from './PlantServices'
 import * as ShopServices from './ShopServices'
 import * as  LineServices from './LineServices'
 import * as SupervisorServices from './SupervisorServices'
-
+import * as TechnicianServices from './TechnicianServices'
 export  {
   authservices,
   PlantServices,
   ShopServices,
   LineServices,
-  SupervisorServices
+  SupervisorServices,
+  TechnicianServices
 }

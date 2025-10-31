@@ -8,7 +8,6 @@ export const SupervisorData = {
 
         AddSupervisor: TryCatch(async(req:Request,res:Response,next:NextFunction)=>{
             const {name,employeeId,email,plant_id,contactNo,password,shopId,lineId} = req.body
-            console.log(plant_id)   
              const data = await SupervisorServices.supervisorServicesData.AddSupervisor(req.body)
              const result = JSON.parse(JSON.stringify(data))
              if(!data)

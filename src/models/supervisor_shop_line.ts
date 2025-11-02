@@ -19,6 +19,10 @@ export class SupervisorShopLine
   public shopId!: string;
   public lineId!: string;
   public superviseId!: string;
+
+
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
 }
 
 SupervisorShopLine.init(
@@ -65,7 +69,7 @@ SupervisorShopLine.init(
   {
     sequelize,
     tableName: "supervisor_shop_line",
-    timestamps: false,
+    timestamps: true,
     underscored: true,
   }
 );

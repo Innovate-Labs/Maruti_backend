@@ -89,9 +89,9 @@ Line.belongsToMany(Supervisor, {
 
 Supervisor.belongsToMany(Technician, {
   through: TechnicianSupervisor,
-  foreignKey: "superviseId",   // maps to supervisor ID
-  otherKey: "technicianId",    // maps to technician ID
-  as: "technicians",           // supervisor.technicians[]
+  foreignKey: "superviseId",   
+  otherKey: "technicianId",    
+  as: "technicians",           
   onDelete: "CASCADE",
   onUpdate: "CASCADE",
 });

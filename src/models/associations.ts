@@ -1,14 +1,17 @@
 import { Line } from "./line";
+import { Machine } from "./machine";
+import { MachineSteps } from "./machinesSteps";
 import { Plant } from "./plant";
 import { Shop } from "./shop";
 import { Supervisor } from "./supervisor";
 import { SupervisorShopLine } from "./supervisor_shop_line";
+import { Task } from "./task";
 import { Technician } from "./technician";
 import { TechnicianSupervisor } from "./technician_supervisor";
 
 Plant.hasMany(Shop, {
   foreignKey: "plantId",
-  as: "shops", 
+  as: "shops",
   onDelete: "CASCADE",
   onUpdate: "CASCADE",
 });
@@ -16,7 +19,7 @@ Plant.hasMany(Shop, {
 
 Shop.belongsTo(Plant, {
   foreignKey: "plantId",
-  as: "plant", 
+  as: "plant",
 });
 
 Shop.hasMany(Line, {
@@ -89,9 +92,9 @@ Line.belongsToMany(Supervisor, {
 
 Supervisor.belongsToMany(Technician, {
   through: TechnicianSupervisor,
-  foreignKey: "superviseId",   
-  otherKey: "technicianId",    
-  as: "technicians",           
+  foreignKey: "superviseId",
+  otherKey: "technicianId",
+  as: "technicians",
   onDelete: "CASCADE",
   onUpdate: "CASCADE",
 });
@@ -104,3 +107,109 @@ Technician.belongsToMany(Supervisor, {
   onDelete: "CASCADE",
   onUpdate: "CASCADE",
 });
+
+// -------------------- Machine Relationships --------------------
+
+// Plant ↔ Machine (One-to-Many)
+Plant.hasMany(Machine, {
+  foreignKey: "plantId",
+  as: "machines",
+  onDelete: "CASCADE",
+  onUpdate: "CASCADE",
+});
+
+Machine.belongsTo(Plant, {
+  foreignKey: "plantId",
+  as: "plants",
+});
+
+// Shop ↔ Machine (One-to-Many)
+Shop.hasMany(Machine, {
+  foreignKey: "shopId",
+  as: "machines",
+  onDelete: "CASCADE",
+  onUpdate: "CASCADE",
+});
+
+Machine.belongsTo(Shop, {
+  foreignKey: "shopId",
+  as: "shops",
+});
+
+// Line ↔ Machine (One-to-Many)
+Line.hasMany(Machine, {
+  foreignKey: "lineId",
+  as: "machines",
+  onDelete: "CASCADE",
+  onUpdate: "CASCADE",
+});
+
+Machine.belongsTo(Line, {
+  foreignKey: "lineId",
+  as: "lines",
+});
+
+
+// One Machine has many MachineSteps
+Machine.hasMany(MachineSteps, {
+  foreignKey: "machineId",
+  as: "machineSteps", // alias for readability (machine.steps)
+  onDelete: "CASCADE",
+  onUpdate: "CASCADE",
+});
+
+// Each MachineSteps belongs to one Machine
+MachineSteps.belongsTo(Machine, {
+  foreignKey: "machineId",
+  as: "machine",
+});
+
+// One Machine has many Tasks
+Machine.hasMany(Task, {
+  foreignKey: "machineId",
+  as: "tasks", // use plural "tasks" for better semantics
+  onDelete: "CASCADE",
+  onUpdate: "CASCADE",
+});
+
+// Each Task belongs to one Machine
+Task.belongsTo(Machine, {
+  foreignKey: "machineId",
+  as: "machine",
+});
+
+
+// -------------------- MachineSteps ↔ Task Relationships --------------------
+
+// One MachineStep has many Tasks
+MachineSteps.hasMany(Task, {
+  foreignKey: "stepsId",
+  as: "tasks",
+  onDelete: "CASCADE",
+  onUpdate: "CASCADE",
+});
+
+// Each Task belongs to one MachineStep
+Task.belongsTo(MachineSteps, {
+  foreignKey: "stepsId",
+  as: "step",
+});
+
+
+// -------------------- Technician ↔ Task Relationships --------------------
+
+// One Technician has many Tasks
+Technician.hasMany(Task, {
+  foreignKey: "technicianId",
+  as: "tasks",
+  onDelete: "CASCADE",
+  onUpdate: "CASCADE",
+});
+
+// Each Task belongs to one Technician
+Task.belongsTo(Technician, {
+  foreignKey: "technicianId",
+  as: "technician",
+});
+
+

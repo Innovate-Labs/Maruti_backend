@@ -6,7 +6,7 @@ import { errorMiddleware, TryCatch } from "@/middlewares/error.js"
 import morgan from "morgan"
 import dotenv from "dotenv"
 import router from "./routes"
-import { connectDB } from "./database/db.config"
+import { connectDB } from "./models"
   
   dotenv.config({path: './.env',});
   

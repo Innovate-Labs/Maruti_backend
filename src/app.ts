@@ -5,7 +5,7 @@ import cors from 'cors'
 import { errorMiddleware, TryCatch } from "@/middlewares/error.js"
 import morgan from "morgan"
 import dotenv from "dotenv"
-import router from "./routes"
+import router from "./routes/index"
 import { connectDB } from "./models"
   
   dotenv.config();

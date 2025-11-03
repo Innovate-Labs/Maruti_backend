@@ -7,6 +7,7 @@ import supervisorRoute from "./supervisor.route"
 import technicianRoute from "./technician.route"
 import machineRoute from "./machine.route"
 import commonRoute from "./common.route"
+import taskRoute from "./task.route"
 
 const router = express.Router();
 
@@ -23,7 +24,8 @@ const defaultRoutes: RouteItem[] = [
   {path: "/supervisor",route: supervisorRoute},
   {path:"/technician", route: technicianRoute},
   {path:"/machine", route: machineRoute},
-  {path:"/common", route: commonRoute}
+  {path:"/common", route: commonRoute},
+  {path:"/task", route: taskRoute}
 ];
 
 defaultRoutes.forEach((route) => {

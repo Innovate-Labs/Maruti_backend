@@ -1,6 +1,6 @@
 import { DataTypes, Model, Optional } from "sequelize";
 import { sequelize } from "@/database/db.config";
-
+import bcrypt from "bcrypt";
  interface TechnicianAttributes {
   id: string;
   name: string;
@@ -54,6 +54,14 @@ Technician.init(
         password: {
             type: DataTypes.STRING(255),
             allowNull: false,
+                set(value: string) {
+        // ✅ you can hash directly in the setter (works with hooks too)
+        if (value) {
+          const salt = bcrypt.genSaltSync(10);
+          const hash = bcrypt.hashSync(value, salt);
+          this.setDataValue("password", hash);
+        }
+      },
         },
     },
     {

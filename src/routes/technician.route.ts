@@ -8,4 +8,7 @@ router.post("/technician-create",
 // validateSchema(SchemaValidation.BodySchema.Supervisor),
 technicianController.TechnicianData.AddTechnician)
 
+router.post("/login-technician",
+technicianController.TechnicianData.Logintechnician)
+
 export default router;

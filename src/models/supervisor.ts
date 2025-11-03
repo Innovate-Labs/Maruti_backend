@@ -1,7 +1,7 @@
 import { DataTypes, Model, Optional } from "sequelize";
 import { sequelize } from "@/database/db.config";
 import { Plant } from "./plant";
-
+import bcrypt from "bcrypt";
 
  interface SupervisorAttributes {
   id: string;
@@ -75,6 +75,22 @@ Supervisor.init(
         tableName: "supervisors",
         timestamps: true,
         underscored: true,
+        hooks: {
+              // ✅ Encrypt password before saving a new technician
+              beforeCreate: async (supervisor: Supervisor) => {
+                if (supervisor.password) {
+                  const salt = await bcrypt.genSalt(10);
+                  supervisor.password = await bcrypt.hash(supervisor.password, salt);
+                }
+              },
+              // ✅ Encrypt password before updating (if password changed)
+              beforeUpdate: async (supervisor: Supervisor) => {
+                if (supervisor.changed("password")) {
+                  const salt = await bcrypt.genSalt(10);
+                  supervisor.password = await bcrypt.hash(supervisor.password, salt);
+                }
+              },
+            },
     }
 );
 

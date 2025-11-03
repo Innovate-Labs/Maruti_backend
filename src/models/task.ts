@@ -7,7 +7,6 @@ interface TasksAttributes {
     technicianId?: string;
     status?: string;
     machineId?: string;
-    stepsId?: string;
     currentDate?: Date;
 }
 
@@ -20,7 +19,6 @@ export class Task extends Model<TasksAttributes, MachineStepsCreationAttributes>
     public technicianId?: string;
     public status?: string;
     public machineId?: string;
-    public stepsId?: string;
     public currentDate?: Date
 
     public readonly createdAt!: Date;
@@ -60,18 +58,6 @@ Task.init(
             onDelete: "CASCADE",
             onUpdate: "CASCADE",
         },
-        stepsId: {
-            type: DataTypes.UUID,
-            allowNull: false,
-            field: "steps_id",
-            references: {
-                model: "machinesSteps", // ✅ correct table name
-                key: "id",
-            },
-            onDelete: "CASCADE",
-            onUpdate: "CASCADE",
-        },
-
         currentDate: {
             type: DataTypes.DATE,
             allowNull: false

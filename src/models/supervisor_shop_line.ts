@@ -7,14 +7,15 @@ interface SupervisorShopLineAttributes {
   shopId: string;
   lineId: string;
   superviseId: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 interface SupervisorShopLineCreationAttributes
-  extends Optional<SupervisorShopLineAttributes, "id"> {}
+  extends Optional<SupervisorShopLineAttributes, "id"> { }
 
 export class SupervisorShopLine
   extends Model<SupervisorShopLineAttributes, SupervisorShopLineCreationAttributes>
-  implements SupervisorShopLineAttributes
-{
+  implements SupervisorShopLineAttributes {
   public id!: string;
   public shopId!: string;
   public lineId!: string;
@@ -64,6 +65,18 @@ SupervisorShopLine.init(
       },
       onDelete: "CASCADE",
       onUpdate: "CASCADE",
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+      field: "created_at",
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+      field: "updated_at",
     },
   },
   {

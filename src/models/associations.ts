@@ -182,18 +182,18 @@ Task.belongsTo(Machine, {
 // -------------------- MachineSteps ↔ Task Relationships --------------------
 
 // One MachineStep has many Tasks
-MachineSteps.hasMany(Task, {
-  foreignKey: "stepsId",
-  as: "tasks",
-  onDelete: "CASCADE",
-  onUpdate: "CASCADE",
-});
+// MachineSteps.hasMany(Task, {
+//   foreignKey: "stepsId",
+//   as: "tasks",
+//   onDelete: "CASCADE",
+//   onUpdate: "CASCADE",
+// });
 
-// Each Task belongs to one MachineStep
-Task.belongsTo(MachineSteps, {
-  foreignKey: "stepsId",
-  as: "step",
-});
+// // Each Task belongs to one MachineStep
+// Task.belongsTo(MachineSteps, {
+//   foreignKey: "stepsId",
+//   as: "step",
+// });
 
 
 // -------------------- Technician ↔ Task Relationships --------------------
@@ -210,6 +210,19 @@ Technician.hasMany(Task, {
 Task.belongsTo(Technician, {
   foreignKey: "technicianId",
   as: "technician",
+});
+
+Task.hasMany(MachineSteps, {
+  foreignKey: "taskId",
+  as: "steps", // use plural for clarity (task.steps)
+  onDelete: "CASCADE",
+  onUpdate: "CASCADE",
+});
+
+// Each MachineStep belongs to one Task
+MachineSteps.belongsTo(Task, {
+  foreignKey: "taskId",
+  as: "task",
 });
 
 

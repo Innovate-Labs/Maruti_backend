@@ -4,11 +4,19 @@ import * as ShopServices from './ShopServices'
 import * as  LineServices from './LineServices'
 import * as SupervisorServices from './SupervisorServices'
 import * as TechnicianServices from './TechnicianServices'
+import * as MachineServices from './MachineServices'
+import * as CommonServices from './CommonServices'
+import * as TaskServices from './TaskServices'
+
+
 export  {
   authservices,
   PlantServices,
   ShopServices,
   LineServices,
   SupervisorServices,
-  TechnicianServices
+  TechnicianServices,
+  MachineServices,
+  CommonServices,
+  TaskServices
 }

@@ -8,7 +8,7 @@ import dotenv from "dotenv"
 import router from "./routes"
 import { connectDB } from "./models"
   
-  dotenv.config({path: './.env',});
+  dotenv.config();
   
   export const envMode = process.env.NODE_ENV?.trim() || 'DEVELOPMENT';
   const port = process.env.PORT || 3000;

@@ -48,5 +48,6 @@ jobs:
         with:
           app-name: 'checkAR' # Name of your Azure Web App
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_44AA62BBE15044819FCF8689874759A0 }}
+          publish-profile: ${{ AZUREAPPSERVICE_PUBLISHPROFILE_44AA62BBE15044819FCF8689874759A0 }}
           package: .
+

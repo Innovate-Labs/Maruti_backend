@@ -5,7 +5,7 @@ import { sequelize } from "@/database/db.config";
 interface MachineStepsAttributes {
     id: string;
     machineId?: string;
-    stepsRecord?: JSON;
+    stepsRecord?: any[];
     stepsId?: string;
     taskId?: string;
 }
@@ -18,7 +18,7 @@ export class MachineSteps extends Model<MachineStepsAttributes, MachineStepsCrea
     public id!: string;
     public machineId?: string;
     public taskId?: string;
-    public stepsRecord?: JSON;
+    public stepsRecord?: any[];
     public stepsId?: string;
 
     public readonly createdAt!: Date;

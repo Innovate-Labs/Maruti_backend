@@ -11,4 +11,8 @@ technicianController.TechnicianData.AddTechnician)
 router.post("/login-technician",
 technicianController.TechnicianData.Logintechnician)
 
+router.get("/get-all-task-technicain/:technicianId",
+ technicianController.TechnicianData.Tasktechnician
+)
+
 export default router;

@@ -31,6 +31,7 @@ export const MachineController = {
             console.log(error)
             throw error
         }
-    }
+    },
+    
 
 }

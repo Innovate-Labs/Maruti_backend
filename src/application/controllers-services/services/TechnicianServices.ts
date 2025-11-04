@@ -1,3 +1,5 @@
+import { Machine } from "@/models/machine";
+import { Task } from "@/models/task";
 import { Technician } from "@/models/technician";
 import { TechnicianSupervisor } from "@/models/technician_supervisor";
 
@@ -47,10 +49,31 @@ export const technicianServices = {
   },
   getUserLogin: async(email:string)=>{
      const getTechnician = await Technician.findOne({
+      attributes:['id','name','employeeId','contactNo','password'],
       where:{
         email:email
       }
      })
      return getTechnician
+  },
+  getTaskBytechnicianId:async(technicianId:any)=>{
+const result = await Task.findAll({
+    where: { technicianId },
+    include: [
+      {
+        model: Technician,
+        as: "technician",
+        attributes: ["id", "name", "email", "contact_no", "employee_id"],
+      },
+      {
+        model: Machine,
+        as: "machine",
+        attributes: ["id", "machine_name", "serial_number", "first_services","services_frequency"],
+      },
+    ],
+  });
+
+  return result.map((task) => task.get({ plain: true }));
   }
+
 }

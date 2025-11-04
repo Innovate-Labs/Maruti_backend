@@ -28,6 +28,14 @@ export const TechnicianData = {
         if (!isMatch) {
             return ResponseData.ResponseHelpers.SetErrorResponse('Invalid password', res, StatusCode.BAD_REQUEST)
         }
-        return ResponseData.ResponseHelpers.SetSuccessResponse('Login successfully', res, StatusCode.OK)
-    })
+        return ResponseData.ResponseHelpers.SetSuccessResponse(checkuser, res, StatusCode.OK)
+    }),
+    Tasktechnician: async (req: Request, res: Response, next: NextFunction) => {
+        const technicianId = req.params.technicianId
+        const technicianTask = await TechnicianServices.technicianServices.getTaskBytechnicianId(technicianId)
+        if (!technicianTask) {
+            return ResponseData.ResponseHelpers.SetErrorResponse('Unable to get task', res, StatusCode.BAD_REQUEST)
+        }
+        return ResponseData.ResponseHelpers.SetSuccessResponse(technicianTask, res, StatusCode.OK)
+    }
 }

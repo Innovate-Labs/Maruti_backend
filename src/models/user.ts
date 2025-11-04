@@ -14,7 +14,8 @@ interface UserAttributes {
   name: string;
   email: string;
   password: string;
-  role:UserRole
+  role:UserRole;
+  // plantId:string;
 }
 
 // For creation (since id is auto-generated)
@@ -28,6 +29,7 @@ export class User extends Model<UserAttributes, UserCreationAttributes>
   public email!: string;
   public password!: string;
   public role!: UserRole;
+  // public plantId!: string;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -59,6 +61,16 @@ User.init(
       type: DataTypes.STRING(100),
       allowNull: false,
     },
+    // plantId: {
+    //   type: DataTypes.UUID,
+    //   allowNull: false,
+    //   references: {
+    //     model: "plants",
+    //     key: "id",
+    //   },
+    //   onUpdate: "CASCADE",
+    //   onDelete: "CASCADE",
+    // },
   },
   {
     tableName: "users",

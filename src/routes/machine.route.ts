@@ -8,4 +8,8 @@ const router = Router();
 router.post("/machine-create",
 machineController.MachineController.AddMachine)
 
+router.get("/get-all-machine",
+machineController.MachineController.GetAllMachine
+)
+
 export default router;

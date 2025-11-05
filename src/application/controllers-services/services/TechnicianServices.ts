@@ -3,7 +3,7 @@ import { Plant } from "@/models/plant";
 import { Task } from "@/models/task";
 import { Technician } from "@/models/technician";
 import { TechnicianSupervisor } from "@/models/technician_supervisor";
-import { differenceInDays,format  } from "date-fns";
+import { differenceInDays, format } from "date-fns";
 
 
 
@@ -18,8 +18,7 @@ export interface MachinePlain {
   lineId?: string;
   createdAt?: Date;
   updatedAt?: Date;
-  // ... any other DB fields you want to expose
-  dueDate?: string; // we'll add this
+  dueDate?: string; 
 }
 
 export interface TaskPlain {
@@ -28,7 +27,7 @@ export interface TaskPlain {
   status?: string;
   machineId?: string;
   currentDate?: string | null;
-  plantName?: string; // ✅ newly added
+  plantName?: string;
   createdAt?: Date;
   updatedAt?: Date;
   technician?: {
@@ -97,290 +96,78 @@ export const technicianServices = {
     return getTechnician
   },
   getTaskBytechnicianId: async (technicianId: any) => {
-    // const result = await Task.findAll({
-    //   where: { technicianId },
-    //   include: [
-    //     {
-    //       model: Technician,
-    //       as: "technician",
-    //       attributes: ["id", "name", "email", "contact_no", "employee_id"],
-    //     },
-    //     {
-    //       model: Machine,
-    //       as: "machine",
-    //       attributes: ["id", "machine_name", "serial_number", "first_services", "services_frequency"],
-    //     },
-    //   ],
-    // });
-
-    // return result.map((task) => task.get({ plain: true }));
-    //       const result = await Task.findAll({
-    //     where: { technicianId },
-    //     include: [
-    //       {
-    //         model: Technician,
-    //         as: "technician",
-    //         attributes: ["id", "name", "email", "contact_no", "employee_id"],
-    //       },
-    //       {
-    //         model: Machine,
-    //         as: "machine",
-    //         attributes: [
-    //           "id",
-    //           "machine_name",
-    //           "serial_number",
-    //           "first_services",
-    //           "services_frequency",
-    //         ],
-    //       },
-    //     ],
-    //   });
-
-
-    //    console.log(JSON.parse(JSON.stringify(result)))
-    // const today = new Date();
-
-    //   const tasksWithDueDate: TaskPlain[] = result.map((task) => {
-    //     const plainTask = task.get({ plain: true }) as TaskPlain;
-    //     const machine = plainTask.machine;
-
-    //     if (!machine?.first_services) return plainTask;
-
-    //     const firstServiceDate = new Date(machine.first_services);
-    //     const daysDiff = differenceInDays(firstServiceDate, today);
-
-    //     let dueDateText = "";
-    //     if (daysDiff > 0) {
-    //       dueDateText = `in ${daysDiff} day${daysDiff > 1 ? "s" : ""}`;
-    //     } else if (daysDiff === 0) {
-    //       dueDateText = "today";
-    //     } else {
-    //       dueDateText = `overdue by ${Math.abs(daysDiff)} day${Math.abs(daysDiff) > 1 ? "s" : ""}`;
-    //     }
-
-    //     return {
-    //       ...plainTask,
-    //       machine: {
-    //         ...machine,
-    //         dueDate: dueDateText,
-    //       },
-    //     };
-    //   });
-
-    //   return {
-    //     success: true,
-    //     data: tasksWithDueDate,
-    //   };
-
-
-
-    //   }
-
-
-    // const result = await Task.findAll({
-    //   where: { technicianId },
-    //   include: [
-    //     {
-    //       model: Technician,
-    //       as: "technician",
-    //       attributes: ["id", "name", "email", "contact_no", "employee_id"],
-    //     },
-    //     {
-    //       model: Machine,
-    //       as: "machine",
-    //       attributes: [
-    //         "id",
-    //         "machine_name",
-    //         "serial_number",
-    //         "first_services",
-    //         "services_frequency",
-    //       ],
-    //       include: [
-    //         {
-    //           model: Plant,
-    //           as: "plants", // ✅ use the alias defined in associations
-    //           attributes: ["id", "name", "description"],
-    //         },
-    //       ],
-    //     },
-    //   ],
-    // });
-
-    // const today = new Date();
-
-    // const tasksWithDueDate: TaskPlain[] = (result as unknown as TaskWithRelations[]).map((task) => {
-    //   const plainTask = task.get({ plain: true }) as TaskPlain;
-    //   const machine = plainTask.machine;
-
-    //   if (!machine?.first_services) return plainTask;
-
-    //   const firstServiceDate = new Date(machine.first_services);
-    //   const daysDiff = differenceInDays(firstServiceDate, today);
-
-    //   let dueDateText = "";
-    //   if (daysDiff > 0) {
-    //     dueDateText = `in ${daysDiff} day${daysDiff > 1 ? "s" : ""}`;
-    //   } else if (daysDiff === 0) {
-    //     dueDateText = "today";
-    //   } else {
-    //     dueDateText = `overdue by ${Math.abs(daysDiff)} day${Math.abs(daysDiff) > 1 ? "s" : ""}`;
-    //   }
-
-    //   return {
-    //     ...plainTask,
-    //     machine: {
-    //       ...machine,
-    //       dueDate: dueDateText,
-    //     },
-    //   };
-    // });
-
-    // return {
-    //   success: true,
-    //   data: tasksWithDueDate,
-    // };
-
-    // const result = await Task.findAll({
-    //   where: { technicianId },
-    //   include: [
-    //     {
-    //       model: Technician,
-    //       as: "technician",
-    //       attributes: ["id", "name", "email", "contact_no", "employee_id"],
-    //     },
-    //     {
-    //       model: Machine,
-    //       as: "machine",
-    //       attributes: [
-    //         "id",
-    //         "machine_name",
-    //         "serial_number",
-    //         "first_services",
-    //         "services_frequency",
-    //       ],
-    //       include: [
-    //         {
-    //           model: Plant,
-    //           as: "plants",
-    //           attributes: ["id", "name", "description"],
-    //         },
-    //       ],
-    //     },
-    //   ],
-    // });
-
-    // const today = new Date();
-
-    // const tasksWithDueDate: TaskPlain[] = (result as unknown as TaskWithRelations[]).map((task) => {
-    //   const plainTask = task.get({ plain: true }) as TaskPlain;
-    //   const machine = plainTask.machine;
-
-    //   if (!machine?.first_services) return plainTask;
-
-    //   const firstServiceDate = new Date(machine.first_services);
-    //   const daysDiff = differenceInDays(firstServiceDate, today);
-
-    //   let dueDateText = "";
-    //   if (daysDiff > 0) {
-    //     dueDateText = `in ${daysDiff} day${daysDiff > 1 ? "s" : ""}`;
-    //   } else if (daysDiff === 0) {
-    //     dueDateText = "today";
-    //   } else {
-    //     dueDateText = `overdue by ${Math.abs(daysDiff)} day${Math.abs(daysDiff) > 1 ? "s" : ""}`;
-    //   }
-
-    //   // ✅ Extract plant name safely
-    //   const plantName = machine.plants?.name ?? "N/A";
-
-    //   // ✅ Return flattened structure
-    //   return {
-    //     ...plainTask,
-    //     plantName,
-    //     machine: {
-    //       ...machine,
-    //       dueDate: dueDateText,
-    //     },
-    //   };
-    // });
-
-    // return {
-    //   success: true,
-    //   data: tasksWithDueDate,
-    // };
-
     const result = await Task.findAll({
-  where: { technicianId },
-  include: [
-    {
-      model: Technician,
-      as: "technician",
-      attributes: ["id", "name", "email", "contact_no", "employee_id"],
-    },
-    {
-      model: Machine,
-      as: "machine",
-      attributes: [
-        "id",
-        "machine_name",
-        "serial_number",
-        "first_services",
-        "services_frequency",
-      ],
+      where: { technicianId },
       include: [
         {
-          model: Plant,
-          as: "plants",
-          attributes: ["id", "name", "description"],
+          model: Technician,
+          as: "technician",
+          attributes: ["id", "name", "email", "contact_no", "employee_id"],
+        },
+        {
+          model: Machine,
+          as: "machine",
+          attributes: [
+            "id",
+            "machine_name",
+            "serial_number",
+            "first_services",
+            "services_frequency",
+          ],
+          include: [
+            {
+              model: Plant,
+              as: "plants",
+              attributes: ["id", "name", "description"],
+            },
+          ],
         },
       ],
-    },
-  ],
-});
+    });
 
-const today = new Date();
+    const today = new Date();
 
-const tasksWithDueDate: TaskPlain[] = (result as unknown as TaskWithRelations[]).map((task) => {
-  const plainTask = task.get({ plain: true }) as TaskPlain;
-  const machine = plainTask.machine;
+    const tasksWithDueDate: TaskPlain[] = (result as unknown as TaskWithRelations[]).map((task) => {
+      const plainTask = task.get({ plain: true }) as TaskPlain;
+      const machine = plainTask.machine;
 
-  // ✅ Format currentDate
-  const formattedCurrentDate = plainTask.currentDate
-    ? format(new Date(plainTask.currentDate), "dd/MM/yyyy h:mm a")
-    : null;
+      const formattedCurrentDate = plainTask.currentDate
+        ? format(new Date(plainTask.currentDate), "dd/MM/yyyy h:mm a")
+        : null;
 
-  if (!machine?.first_services) {
-    return { ...plainTask, currentDate: formattedCurrentDate };
-  }
+      if (!machine?.first_services) {
+        return { ...plainTask, currentDate: formattedCurrentDate };
+      }
 
-  const firstServiceDate = new Date(machine.first_services);
-  const daysDiff = differenceInDays(firstServiceDate, today);
+      const firstServiceDate = new Date(machine.first_services);
+      const daysDiff = differenceInDays(firstServiceDate, today);
 
-  let dueDateText = "";
-  if (daysDiff > 0) {
-    dueDateText = `in ${daysDiff} day${daysDiff > 1 ? "s" : ""}`;
-  } else if (daysDiff === 0) {
-    dueDateText = "today";
-  } else {
-    dueDateText = `overdue by ${Math.abs(daysDiff)} day${Math.abs(daysDiff) > 1 ? "s" : ""}`;
-  }
+      let dueDateText = "";
+      if (daysDiff > 0) {
+        dueDateText = `in ${daysDiff} day${daysDiff > 1 ? "s" : ""}`;
+      } else if (daysDiff === 0) {
+        dueDateText = "today";
+      } else {
+        dueDateText = `overdue by ${Math.abs(daysDiff)} day${Math.abs(daysDiff) > 1 ? "s" : ""}`;
+      }
 
-  const plantName = machine.plants?.name ?? "N/A";
+      const plantName = machine.plants?.name ?? "N/A";
 
-  return {
-    ...plainTask,
-    currentDate: formattedCurrentDate, // ✅ formatted
-    plantName,
-    machine: {
-      ...machine,
-      dueDate: dueDateText,
-    },
-  };
-});
+      return {
+        ...plainTask,
+        currentDate: formattedCurrentDate,
+        plantName,
+        machine: {
+          ...machine,
+          dueDate: dueDateText,
+        },
+      };
+    });
 
-return {
-  success: true,
-  data: tasksWithDueDate,
-};
+    return {
+      success: true,
+      data: tasksWithDueDate,
+    };
 
   },
 

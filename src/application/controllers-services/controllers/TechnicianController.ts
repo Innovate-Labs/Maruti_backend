@@ -36,6 +36,6 @@ export const TechnicianData = {
         if (!technicianTask) {
             return ResponseData.ResponseHelpers.SetErrorResponse('Unable to get task', res, StatusCode.BAD_REQUEST)
         }
-        return ResponseData.ResponseHelpers.SetSuccessResponse(technicianTask, res, StatusCode.OK)
+        return ResponseData.ResponseHelpers.SetSuccessResponse(technicianTask.data, res, StatusCode.OK)
     }
 }

@@ -22,5 +22,13 @@ export const LineServicesData = {
         })
 
         return getlinedata
+    },
+    getLineByshop: async(shopId:any) => {
+      const getlinedata = await Line.findAll({
+        where:{
+          shopId:shopId
+        }
+      })
+      return getlinedata
     }
 }

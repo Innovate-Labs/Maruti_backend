@@ -15,5 +15,12 @@ export const SupervisorData = {
         }
         const supervisiordata = await SupervisorServices.supervisorServicesData.AddSupervisorMap(shopId, lineId, result.id)
         return ResponseData.ResponseHelpers.SetSuccessResponse(data, res, StatusCode.OK)
+    }),
+      GetSupervisor: TryCatch(async (req: Request, res: Response, next: NextFunction) => {
+        const data = await SupervisorServices.supervisorServicesData.GetAllSupervisorDetails()
+         if (!data) {
+            return ResponseData.ResponseHelpers.SetErrorResponse("Error in data creating", res, StatusCode.BAD_REQUEST)
+        }
+        return ResponseData.ResponseHelpers.SetSuccessResponse(data, res, StatusCode.OK)
     })
 }

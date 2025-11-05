@@ -13,5 +13,7 @@ lineController.LineData.createLineData)
 router.get("/get-all-line",
 lineController.LineData.getLineData
 )
+router.get("/get-line-shop/:shopId",
+lineController.LineData.getLineByshop)
 
 export default router;

@@ -81,5 +81,14 @@ export const shopServicesData = {
                 error
             };
         }
+    },
+    getShopByplantId:async(plantId:any) =>{
+       const shop = await Shop.findAll({
+        where:{
+            plantId:plantId
+        }
+       })
+
+       return shop
     }
 }

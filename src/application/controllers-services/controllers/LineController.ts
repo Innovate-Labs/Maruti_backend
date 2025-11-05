@@ -8,21 +8,27 @@ import { StatusCode } from "@/utils/CommonConfig";
 
 export const LineData = {
 
-    createLineData: TryCatch(async(req:Request,res:Response,next:NextFunction)=>{
-         const {name, lineId, shopId} = req.body
-         const data = await LineServices.LineServicesData.AddLine(req.body)
-         if(!data)
-         {
-             return ResponseData.ResponseHelpers.SetErrorResponse("Error in data creating",res,StatusCode.BAD_REQUEST)
-         }
-         return ResponseData.ResponseHelpers.SetSuccessResponse(data,res,StatusCode.OK)
+    createLineData: TryCatch(async (req: Request, res: Response, next: NextFunction) => {
+        const { name, lineId, shopId } = req.body
+        const data = await LineServices.LineServicesData.AddLine(req.body)
+        if (!data) {
+            return ResponseData.ResponseHelpers.SetErrorResponse("Error in data creating", res, StatusCode.BAD_REQUEST)
+        }
+        return ResponseData.ResponseHelpers.SetSuccessResponse(data, res, StatusCode.OK)
     }),
-    getLineData: TryCatch(async(req:Request,res:Response,next:NextFunction)=>{
-           const data = await LineServices.LineServicesData.getLineData()
-        if(!data)
-         {
-             return ResponseData.ResponseHelpers.SetErrorResponse("Error in data creating",res,StatusCode.BAD_REQUEST)
-         }
-         return ResponseData.ResponseHelpers.SetSuccessResponse(data,res,StatusCode.OK)
-    })
+    getLineData: TryCatch(async (req: Request, res: Response, next: NextFunction) => {
+        const data = await LineServices.LineServicesData.getLineData()
+        if (!data) {
+            return ResponseData.ResponseHelpers.SetErrorResponse("Error in data creating", res, StatusCode.BAD_REQUEST)
+        }
+        return ResponseData.ResponseHelpers.SetSuccessResponse(data, res, StatusCode.OK)
+    }),
+    getLineByshop: TryCatch(async (req: Request, res: Response, next: NextFunction) => {
+        const shopId = req.params.shopId
+        const data = await LineServices.LineServicesData.getLineByshop(shopId)
+        if (!data) {
+            return ResponseData.ResponseHelpers.SetErrorResponse("Error in data creating", res, StatusCode.BAD_REQUEST)
+        }
+        return ResponseData.ResponseHelpers.SetSuccessResponse(data, res, StatusCode.OK)
+    }),
 }

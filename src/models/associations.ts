@@ -225,4 +225,22 @@ MachineSteps.belongsTo(Task, {
   as: "task",
 });
 
+Supervisor.hasMany(SupervisorShopLine, {
+  foreignKey: "superviseId",
+  as: "superpersives", // must match your query alias
+});
 
+SupervisorShopLine.belongsTo(Supervisor, {
+  foreignKey: "superviseId",
+  as: "supervisor",
+});
+
+SupervisorShopLine.belongsTo(Shop, {
+  foreignKey: "shop_id",
+  as: "shop",
+});
+
+SupervisorShopLine.belongsTo(Line, {
+  foreignKey: "line_id",
+  as: "line",
+});

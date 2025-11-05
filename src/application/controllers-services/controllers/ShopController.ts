@@ -16,5 +16,13 @@ export const ShopData = {
              return ResponseData.ResponseHelpers.SetErrorResponse("Error in data creating",res,StatusCode.BAD_REQUEST)
          }
          return ResponseData.ResponseHelpers.SetSuccessResponse(data,res,StatusCode.OK)
+    }),
+    getAllShopsDetails: TryCatch(async(req:Request,res:Response,next:NextFunction)=>{
+         const getdetails = await ShopServices.shopServicesData.getAllShopsDetails()
+            if(!getdetails)
+         {
+             return ResponseData.ResponseHelpers.SetErrorResponse("Error in data creating",res,StatusCode.BAD_REQUEST)
+         }
+         return ResponseData.ResponseHelpers.SetSuccessResponse(getdetails,res,StatusCode.OK)
     })
 }

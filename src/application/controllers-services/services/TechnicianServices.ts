@@ -22,21 +22,14 @@ export const technicianServices = {
     technicianId: string
   ) => {
     try {
-      // Ensure arrays are always arrays (in case single values are sent)
       const superviseList = Array.isArray(superviseId) ? superviseId : [superviseId];
-      console.log(technicianId)
-      // Prepare entries
       const entries = [];
       for (const superviseId of superviseList) {
         entries.push({ technicianId, superviseId });
-
       }
-
-      // Bulk insert all at once
       const created = await TechnicianSupervisor.bulkCreate(entries, {
-        ignoreDuplicates: true, // ✅ Skips duplicates automatically (MySQL only)
+        ignoreDuplicates: true,
       });
-
       return created
     } catch (error: any) {
       console.error("Error adding supervisor map:", error);
@@ -47,33 +40,33 @@ export const technicianServices = {
       };
     }
   },
-  getUserLogin: async(email:string)=>{
-     const getTechnician = await Technician.findOne({
-      attributes:['id','name','employeeId','contactNo','password'],
-      where:{
-        email:email
+  getUserLogin: async (email: string) => {
+    const getTechnician = await Technician.findOne({
+      attributes: ['id', 'name', 'employeeId', 'contactNo', 'password'],
+      where: {
+        email: email
       }
-     })
-     return getTechnician
+    })
+    return getTechnician
   },
-  getTaskBytechnicianId:async(technicianId:any)=>{
-const result = await Task.findAll({
-    where: { technicianId },
-    include: [
-      {
-        model: Technician,
-        as: "technician",
-        attributes: ["id", "name", "email", "contact_no", "employee_id"],
-      },
-      {
-        model: Machine,
-        as: "machine",
-        attributes: ["id", "machine_name", "serial_number", "first_services","services_frequency"],
-      },
-    ],
-  });
+  getTaskBytechnicianId: async (technicianId: any) => {
+    const result = await Task.findAll({
+      where: { technicianId },
+      include: [
+        {
+          model: Technician,
+          as: "technician",
+          attributes: ["id", "name", "email", "contact_no", "employee_id"],
+        },
+        {
+          model: Machine,
+          as: "machine",
+          attributes: ["id", "machine_name", "serial_number", "first_services", "services_frequency"],
+        },
+      ],
+    });
 
-  return result.map((task) => task.get({ plain: true }));
+    return result.map((task) => task.get({ plain: true }));
   }
 
 }

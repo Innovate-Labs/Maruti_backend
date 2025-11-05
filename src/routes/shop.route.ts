@@ -10,4 +10,8 @@ router.post("/shop-create",
 // validateSchema(SchemaValidation.BodySchema.PlantCreate),
 shopController.ShopData.createShopData)
 
+router.get("/get-all-shops-details",
+shopController.ShopData.getAllShopsDetails
+)
+
 export default router;

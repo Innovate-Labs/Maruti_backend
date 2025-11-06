@@ -8,6 +8,7 @@ interface MachineStepsAttributes {
     stepsRecord?: any[];
     stepsId?: string;
     taskId?: string;
+    totaltimer?: string;
 }
 
 
@@ -20,6 +21,7 @@ export class MachineSteps extends Model<MachineStepsAttributes, MachineStepsCrea
     public taskId?: string;
     public stepsRecord?: any[];
     public stepsId?: string;
+    public totaltimer?: string;
 
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
@@ -57,6 +59,9 @@ MachineSteps.init(
         stepsRecord: {
             type: DataTypes.JSON,
             allowNull: false
+        },
+        totaltimer:{
+            type:DataTypes.STRING
         }
 
     },

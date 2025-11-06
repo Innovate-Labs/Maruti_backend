@@ -9,13 +9,13 @@ export const taskController = {
             const { technicianId, machineId, status, currentDate } = req.body
             const checkCurrenttechnician = await TaskServices.taskServices.ChecktheTask(technicianId,machineId)
              if (checkCurrenttechnician) {
-                ResponseData.ResponseHelpers.SetErrorResponse('Task is already assigned to machine', res, StatusCode.BAD_REQUEST)
+             return   ResponseData.ResponseHelpers.SetErrorResponse('Task is already assigned to machine', res, StatusCode.BAD_REQUEST)
             }
             const data = await TaskServices.taskServices.AddTask(req.body)
             if (!data) {
-                ResponseData.ResponseHelpers.SetErrorResponse('unable to create data', res, StatusCode.BAD_REQUEST)
+              return  ResponseData.ResponseHelpers.SetErrorResponse('unable to create data', res, StatusCode.BAD_REQUEST)
             }
-            ResponseData.ResponseHelpers.SetSuccessResponse(data, res, StatusCode.OK)
+           return ResponseData.ResponseHelpers.SetSuccessResponse(data, res, StatusCode.OK)
         } catch (error) {
             console.log(error)
             throw error
@@ -25,9 +25,9 @@ export const taskController = {
         try {
             const data = await TaskServices.taskServices.GetTask()
             if (!data) {
-                ResponseData.ResponseHelpers.SetErrorResponse('unable to create data', res, StatusCode.BAD_REQUEST)
+              return  ResponseData.ResponseHelpers.SetErrorResponse('unable to create data', res, StatusCode.BAD_REQUEST)
             }
-            ResponseData.ResponseHelpers.SetSuccessResponse(data, res, StatusCode.OK)
+         return   ResponseData.ResponseHelpers.SetSuccessResponse(data, res, StatusCode.OK)
         } catch (error) {
             console.log(error)
             throw error
@@ -38,7 +38,7 @@ export const taskController = {
             const { machine_id, steps_record, task_id } = req.body
             const createtask = await TaskServices.taskServices.CreateStesps(req.body)
             if (!createtask) {
-                ResponseData.ResponseHelpers.SetErrorResponse('unable to create task', res, StatusCode.BAD_REQUEST)
+               return ResponseData.ResponseHelpers.SetErrorResponse('unable to create task', res, StatusCode.BAD_REQUEST)
             }
             return ResponseData.ResponseHelpers.SetSuccessResponse(createtask, res, StatusCode.OK)
         } catch (error) {
@@ -51,7 +51,7 @@ export const taskController = {
             const taskId = req.params.taskId
             const getTask = await TaskServices.taskServices.GetTaskOverview(taskId)
             if (!getTask) {
-               ResponseData.ResponseHelpers.SetErrorResponse('unable to create task', res, StatusCode.BAD_REQUEST)
+              return ResponseData.ResponseHelpers.SetErrorResponse('unable to create task', res, StatusCode.BAD_REQUEST)
             }
             return ResponseData.ResponseHelpers.SetSuccessResponse(getTask,res,StatusCode.OK)
         } catch (error) {

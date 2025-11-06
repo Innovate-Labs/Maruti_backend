@@ -7,6 +7,10 @@ export const taskController = {
     createTask: async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { technicianId, machineId, status, currentDate } = req.body
+            const checkCurrenttechnician = await TaskServices.taskServices.ChecktheTask(technicianId,machineId)
+             if (checkCurrenttechnician) {
+                ResponseData.ResponseHelpers.SetErrorResponse('Task is already assigned to machine', res, StatusCode.BAD_REQUEST)
+            }
             const data = await TaskServices.taskServices.AddTask(req.body)
             if (!data) {
                 ResponseData.ResponseHelpers.SetErrorResponse('unable to create data', res, StatusCode.BAD_REQUEST)

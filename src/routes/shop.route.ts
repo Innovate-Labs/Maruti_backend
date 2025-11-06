@@ -18,4 +18,8 @@ router.get("/get-shop-plant/:plantId",
 shopController.ShopData.getShopsByPlantId
 )
 
+router.get("/get-all-shops",
+    shopController.ShopData.getAllShops
+)
+
 export default router;

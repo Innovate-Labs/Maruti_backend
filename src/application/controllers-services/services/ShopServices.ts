@@ -90,5 +90,9 @@ export const shopServicesData = {
        })
 
        return shop
+    },
+    getallShops:async()=>{
+        const shop = await Shop.findAll()
+        return shop
     }
 }

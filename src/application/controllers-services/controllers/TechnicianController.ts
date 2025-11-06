@@ -37,5 +37,12 @@ export const TechnicianData = {
             return ResponseData.ResponseHelpers.SetErrorResponse('Unable to get task', res, StatusCode.BAD_REQUEST)
         }
         return ResponseData.ResponseHelpers.SetSuccessResponse(technicianTask.data, res, StatusCode.OK)
+    },
+    GetAlltechnician: async (req: Request, res: Response, next: NextFunction) => {
+        const technicainData = await TechnicianServices.technicianServices.GetAllTechincianFortask()
+        if (!technicainData) {
+            return ResponseData.ResponseHelpers.SetErrorResponse('Unable to get task', res, StatusCode.BAD_REQUEST)
+        }
+        return ResponseData.ResponseHelpers.SetSuccessResponse(technicainData, res, StatusCode.OK)
     }
 }

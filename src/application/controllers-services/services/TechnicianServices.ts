@@ -170,5 +170,9 @@ export const technicianServices = {
     };
 
   },
+  GetAllTechincianFortask: async()=>{
+    const result = await Technician.findAll()
+    return result
+  }
 
 }

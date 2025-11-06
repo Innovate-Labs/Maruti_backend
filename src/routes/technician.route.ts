@@ -15,4 +15,8 @@ router.get("/get-all-task-technicain/:technicianId",
  technicianController.TechnicianData.Tasktechnician
 )
 
+router.get("/get-all-technician",
+technicianController.TechnicianData.GetAlltechnician
+)
+
 export default router;

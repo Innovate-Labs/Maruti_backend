@@ -244,3 +244,27 @@ SupervisorShopLine.belongsTo(Line, {
   foreignKey: "line_id",
   as: "line",
 });
+
+Technician.hasMany(TechnicianSupervisor, {
+  foreignKey: "technicianId",     // ✅ must match your field name in TechnicianSupervisor.init()
+  as: "techniciansupervisors",    // ✅ this alias must match your include "as"
+});
+
+TechnicianSupervisor.belongsTo(Technician, {
+  foreignKey: "technicianId",
+  as: "technician",
+});
+
+TechnicianSupervisor.belongsTo(Supervisor, {
+  foreignKey: "superviseId",
+  as: "supervisor", // 👈 must match include alias
+  onDelete: "CASCADE",
+  onUpdate: "CASCADE",
+});
+
+Supervisor.hasMany(TechnicianSupervisor, {
+  foreignKey: "superviseId",
+  as: "techniciansupervisors",
+  onDelete: "CASCADE",
+  onUpdate: "CASCADE",
+});

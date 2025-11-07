@@ -5,18 +5,22 @@ import { Router } from "express";
 const router = Router();
 
 router.post("/technician-create",
-// validateSchema(SchemaValidation.BodySchema.Supervisor),
-technicianController.TechnicianData.AddTechnician)
+    // validateSchema(SchemaValidation.BodySchema.Supervisor),
+    technicianController.TechnicianData.AddTechnician)
 
 router.post("/login-technician",
-technicianController.TechnicianData.Logintechnician)
+    technicianController.TechnicianData.Logintechnician)
 
 router.get("/get-all-task-technicain/:technicianId",
- technicianController.TechnicianData.Tasktechnician
+    technicianController.TechnicianData.Tasktechnician
 )
 
 router.get("/get-all-technician",
-technicianController.TechnicianData.GetAlltechnician
+    technicianController.TechnicianData.GetAlltechnician
+)
+
+router.get("/get-all-technician-supervisor",
+    technicianController.TechnicianData.GetAlltechnicianSupervisor
 )
 
 export default router;

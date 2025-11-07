@@ -1,9 +1,11 @@
 import { Machine } from "@/models/machine";
 import { Plant } from "@/models/plant";
+import { Supervisor } from "@/models/supervisor";
 import { Task } from "@/models/task";
 import { Technician } from "@/models/technician";
 import { TechnicianSupervisor } from "@/models/technician_supervisor";
 import { differenceInDays, format } from "date-fns";
+import { model } from "mongoose";
 
 
 
@@ -18,7 +20,7 @@ export interface MachinePlain {
   lineId?: string;
   createdAt?: Date;
   updatedAt?: Date;
-  dueDate?: string; 
+  dueDate?: string;
 }
 
 export interface TaskPlain {
@@ -170,9 +172,28 @@ export const technicianServices = {
     };
 
   },
-  GetAllTechincianFortask: async()=>{
+  GetAllTechincianFortask: async () => {
     const result = await Technician.findAll()
     return result
+  },
+  GetAllTechnicinaSupervisor: async () => {
+      const result = await Technician.findAll({
+    include: [
+      {
+        model: TechnicianSupervisor,
+        as: "techniciansupervisors",
+        include: [
+          {
+            model: Supervisor,
+            as: "supervisor",
+            attributes: ["id", "name", "email", "employeeId", "contactNo"], // only what you need
+          },
+        ],
+      },
+    ],
+  });
+
+  return result;
   }
 
 }

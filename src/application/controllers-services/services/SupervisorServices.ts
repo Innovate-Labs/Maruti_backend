@@ -87,6 +87,9 @@ export const supervisorServicesData = {
       error,
     };
   }
+  },
+  GetAllSupervisorDetailsOnly: async()=>{
+      return await Supervisor.findAll()
   }
   
 }

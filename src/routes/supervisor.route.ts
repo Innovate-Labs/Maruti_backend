@@ -12,4 +12,8 @@ router.get("/get-supervisor-details",
 supervisorController.SupervisorData.GetSupervisor
 )
 
+router.get("/get-supervisor-details-only",
+    supervisorController.SupervisorData.GetAllSupervisorDetails
+)
+
 export default router;

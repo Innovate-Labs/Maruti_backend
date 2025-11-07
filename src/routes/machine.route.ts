@@ -12,4 +12,8 @@ router.get("/get-all-machine",
 machineController.MachineController.GetAllMachine
 )
 
+router.get("/get-all-machine-details",
+machineController.MachineController.GetAllMachineIndetails
+)
+
 export default router;

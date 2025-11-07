@@ -32,6 +32,18 @@ export const MachineController = {
             throw error
         }
     },
+        GetAllMachineIndetails: async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const data = await MachineServices.MachineServices.allMachineDetails()
+            if (!data) {
+                ResponseData.ResponseHelpers.SetErrorResponse('Unable to get data', res, StatusCode.BAD_REQUEST)
+            }
+            return ResponseData.ResponseHelpers.SetSuccessResponse(data, res, StatusCode.OK)
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    },
     
 
 }

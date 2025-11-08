@@ -8,5 +8,9 @@ router.get('/all-data',
 commonController.CommonController.getAlldata
 )
 
+router.get('/all-dashboard-data',
+commonController.CommonController.getAllDashboardData
+)
+
 export default router;
  

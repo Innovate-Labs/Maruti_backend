@@ -8,9 +8,21 @@ export const CommonController = {
         try {
             const data = await CommonServices.commonServices.GetAllData()
             if (!data) {
-                ResponseData.ResponseHelpers.SetErrorResponse('Unable to get data', res, StatusCode.BAD_REQUEST)
+              return  ResponseData.ResponseHelpers.SetErrorResponse('Unable to get data', res, StatusCode.BAD_REQUEST)
             }
-            ResponseData.ResponseHelpers.SetSuccessResponse(data,res,StatusCode.OK)
+           return ResponseData.ResponseHelpers.SetSuccessResponse(data, res, StatusCode.OK)
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    },
+    getAllDashboardData: async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const data = await CommonServices.commonServices.GetAllDashboardData()
+            if (!data) {
+              return   ResponseData.ResponseHelpers.SetErrorResponse('Unable to get dashboard data', res, StatusCode.BAD_REQUEST)
+            }
+            return ResponseData.ResponseHelpers.SetSuccessResponse(data,res,StatusCode.OK)
         } catch (error) {
             console.log(error)
             throw error

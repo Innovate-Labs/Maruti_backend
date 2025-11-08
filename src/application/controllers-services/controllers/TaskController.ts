@@ -8,6 +8,9 @@ export const taskController = {
         try {
             const { technicianId, machineId, status, currentDate } = req.body
             const checkCurrenttechnician = await TaskServices.taskServices.ChecktheTask(technicianId,machineId)
+            const ardata = JSON.parse(JSON.stringify(checkCurrenttechnician))
+            // console.log(JSON.parse(JSON.stringify(checkCurrenttechnician)))
+            console.log(ardata.machineId)
              if (checkCurrenttechnician) {
              return   ResponseData.ResponseHelpers.SetErrorResponse('Task is already assigned to machine', res, StatusCode.BAD_REQUEST)
             }

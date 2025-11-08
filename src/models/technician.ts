@@ -1,13 +1,13 @@
 import { DataTypes, Model, Optional } from "sequelize";
 import { sequelize } from "@/database/db.config";
 import bcrypt from "bcrypt";
- interface TechnicianAttributes {
-  id: string;
-  name: string;
-  employeeId: string;
-  email: string;
-  contactNo: string;
-  password: string;
+interface TechnicianAttributes {
+    id: string;
+    name: string;
+    employeeId: string;
+    email: string;
+    contactNo: string;
+    password: string;
 }
 
 
@@ -41,6 +41,8 @@ Technician.init(
         employeeId: {
             type: DataTypes.STRING(100),
             allowNull: false,
+            unique: true,
+
         },
         email: {
             type: DataTypes.STRING(100),
@@ -54,14 +56,14 @@ Technician.init(
         password: {
             type: DataTypes.STRING(255),
             allowNull: false,
-                set(value: string) {
-        // ✅ you can hash directly in the setter (works with hooks too)
-        if (value) {
-          const salt = bcrypt.genSaltSync(10);
-          const hash = bcrypt.hashSync(value, salt);
-          this.setDataValue("password", hash);
-        }
-      },
+            set(value: string) {
+                // ✅ you can hash directly in the setter (works with hooks too)
+                if (value) {
+                    const salt = bcrypt.genSaltSync(10);
+                    const hash = bcrypt.hashSync(value, salt);
+                    this.setDataValue("password", hash);
+                }
+            },
         },
     },
     {

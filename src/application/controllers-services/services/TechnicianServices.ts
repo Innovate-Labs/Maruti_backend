@@ -92,7 +92,7 @@ export const technicianServices = {
     const getTechnician = await Technician.findOne({
       attributes: ['id', 'name', 'employeeId', 'contactNo', 'password'],
       where: {
-        email: email
+        employeeId: email
       }
     })
     return getTechnician

@@ -82,5 +82,44 @@ export const taskServices = {
       })
 
       return task
+   },
+   AlreadyassignedTask: async(machineId:any)=>{
+       const machine = await Task.findOne({
+        where:{
+           machineId:machineId
+        }
+       })
+
+       return machine
+   },
+   UpdateNewTechnicianDetails: async(technicianId:any,machineId:any)=>{
+      try {
+    // Step 1: Run update query
+    const [affectedRows] = await Task.update(
+      { technicianId }, // ✅ maps to DB column 'technician_id'
+      {
+        where: { machineId }, // ✅ maps to 'machine_id'
+      }
+    );
+
+    // Step 2: Handle no matching record
+    if (affectedRows === 0) {
+      console.log("⚠️ No task found for the provided machineId.");
+      return null;
+    }
+
+    // Step 3: Fetch updated record (MySQL does not support `returning`)
+    const updatedTask = await Task.findOne({ where: { machineId } });
+
+    if (!updatedTask) {
+      console.log("⚠️ Task not found after update.");
+      return null;
+    }
+
+    return updatedTask;
+  } catch (error) {
+    console.error("❌ Error in UpdateNewTechnicianDetails:", error);
+    throw error;
+  }
    }
 }

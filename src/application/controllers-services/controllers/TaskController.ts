@@ -7,12 +7,22 @@ export const taskController = {
     createTask: async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { technicianId, machineId, status, currentDate } = req.body
+            
             const checkCurrenttechnician = await TaskServices.taskServices.ChecktheTask(technicianId,machineId)
-            const ardata = JSON.parse(JSON.stringify(checkCurrenttechnician))
+            // const ardata = JSON.parse(JSON.stringify(checkCurrenttechnician))
             // console.log(JSON.parse(JSON.stringify(checkCurrenttechnician)))
-            console.log(ardata.machineId)
+            // console.log(ardata.machineId)
              if (checkCurrenttechnician) {
              return   ResponseData.ResponseHelpers.SetErrorResponse('Task is already assigned to machine', res, StatusCode.BAD_REQUEST)
+            }
+            const checkmachinealreadyassigned = await TaskServices.taskServices.AlreadyassignedTask(machineId)
+            if(checkmachinealreadyassigned)
+            {
+                const updatewithnewTechnician = await TaskServices.taskServices.UpdateNewTechnicianDetails(technicianId,machineId)
+                if(!updatewithnewTechnician){
+              return  ResponseData.ResponseHelpers.SetErrorResponse('Error in updating technician task', res, StatusCode.BAD_REQUEST)
+                }
+                return ResponseData.ResponseHelpers.SetSuccessResponse("Technician Updated Successfully",res,StatusCode.OK)
             }
             const data = await TaskServices.taskServices.AddTask(req.body)
             if (!data) {

@@ -7,8 +7,11 @@ export const MachineController = {
 
     AddMachine: async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { machine_name, serial_number, services_frequency, plant_id, shop_id, line_id, estimate_check, first_services } = req.body
-            console.log(req.body)
+            const { machineName, serialNumber, services_frequency, plant_id, shop_id, line_id, estimate_check, first_services } = req.body
+            const sameMachnie = await MachineServices.MachineServices.checkMachine(machineName, serialNumber)
+            if (sameMachnie) {
+                return ResponseData.ResponseHelpers.SetErrorResponse('Machine Already Exist', res, StatusCode.BAD_REQUEST)
+            }
             const data = await MachineServices.MachineServices.createMachine(req.body)
             if (!data) {
                 ResponseData.ResponseHelpers.SetErrorResponse('Unable to create', res, StatusCode.BAD_REQUEST)
@@ -32,7 +35,7 @@ export const MachineController = {
             throw error
         }
     },
-        GetAllMachineIndetails: async (req: Request, res: Response, next: NextFunction) => {
+    GetAllMachineIndetails: async (req: Request, res: Response, next: NextFunction) => {
         try {
             const data = await MachineServices.MachineServices.allMachineDetails()
             if (!data) {
@@ -44,6 +47,6 @@ export const MachineController = {
             throw error
         }
     },
-    
+
 
 }

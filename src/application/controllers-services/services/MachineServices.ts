@@ -60,5 +60,14 @@ export const MachineServices = {
         : null,
     }));
         return formattedMachines;
+     },
+     checkMachine:async(machineName:any,serialNumber:any)=>{
+          const checkData = await Machine.findOne({
+            where:{
+              machineName:machineName,
+              serialNumber:serialNumber
+            }
+          })
+          return checkData;
      }
 }

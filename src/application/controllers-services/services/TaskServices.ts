@@ -5,8 +5,8 @@ import { Technician } from "@/models/technician"
 import dayjs from "dayjs"
 import { Op } from "sequelize"
 
-const startOfDay = dayjs().startOf("day").format("YYYY-MM-DD HH:mm:ss");
-const endOfDay = dayjs().endOf("day").format("YYYY-MM-DD HH:mm:ss");
+// const startOfDay = dayjs().startOf("day").format("YYYY-MM-DD HH:mm:ss");
+// const endOfDay = dayjs().endOf("day").format("YYYY-MM-DD HH:mm:ss");
 
 export const taskServices = {
   AddTask: async (data: any) => {
@@ -15,11 +15,11 @@ export const taskServices = {
   },
   GetTask: async () => {
    const result = await Task.findAll({
-  where: {
-    currentDate: {
-      [Op.between]: [startOfDay, endOfDay],
-    },
-  },
+  // where: {
+  //   currentDate: {
+  //     [Op.between]: [startOfDay, endOfDay],
+  //   },
+  // },
   include: [
     {
       model: Technician,

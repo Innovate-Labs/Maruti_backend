@@ -69,5 +69,13 @@ export const MachineServices = {
             }
           })
           return checkData;
+     },
+     getSpecificMachineDataBySerialNumber:async(serialNumber:any)=>{
+        const machineData = await Machine.findOne({
+          where:{
+            serialNumber:serialNumber
+          },
+        })
+        return machineData;
      }
 }

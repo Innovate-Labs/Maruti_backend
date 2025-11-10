@@ -2,7 +2,11 @@ import { Machine } from "@/models/machine"
 import { MachineSteps } from "@/models/machinesSteps"
 import { Task } from "@/models/task"
 import { Technician } from "@/models/technician"
+import dayjs from "dayjs"
+import { Op } from "sequelize"
 
+const startOfDay = dayjs().startOf("day").format("YYYY-MM-DD HH:mm:ss");
+const endOfDay = dayjs().endOf("day").format("YYYY-MM-DD HH:mm:ss");
 
 export const taskServices = {
   AddTask: async (data: any) => {
@@ -10,21 +14,26 @@ export const taskServices = {
     return result
   },
   GetTask: async () => {
-    const result = await Task.findAll({
-      include: [
-        {
-          model: Technician,
-          as: "technician",
-          attributes: ["id", "name", "employee_id", "email"], // select columns you need
-        },
-        {
-          model: Machine,
-          as: "machine",
-          attributes: ["id", "machine_name", "serial_number", "services_frequency"], // select columns you need
-        },
-      ],
-      order: [["created_at", "DESC"]],
-    })
+   const result = await Task.findAll({
+  where: {
+    currentDate: {
+      [Op.between]: [startOfDay, endOfDay],
+    },
+  },
+  include: [
+    {
+      model: Technician,
+      as: "technician",
+      attributes: ["id", "name", "employee_id", "email"],
+    },
+    {
+      model: Machine,
+      as: "machine",
+      attributes: ["id", "machine_name", "serial_number", "services_frequency"],
+    },
+  ],
+  order: [["currentDate", "DESC"]],
+});
 
     return result
   },

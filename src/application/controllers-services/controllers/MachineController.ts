@@ -47,6 +47,18 @@ export const MachineController = {
             throw error
         }
     },
-
+    GetSpecificMachine: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const id = req.params.id
+        const data = await MachineServices.MachineServices.getSpecificMachineDataBySerialNumber(id)
+        if (!data) {
+            return ResponseData.ResponseHelpers.SetErrorResponse('Unable to get data', res, StatusCode.BAD_REQUEST)
+        }
+        return ResponseData.ResponseHelpers.SetSuccessResponse(data, res, StatusCode.OK)
+    } catch (error) {
+        console.log(error)
+        throw error
+    }
+}
 
 }

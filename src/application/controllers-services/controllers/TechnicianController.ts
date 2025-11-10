@@ -51,5 +51,13 @@ export const TechnicianData = {
             return ResponseData.ResponseHelpers.SetErrorResponse('Unable to get task', res, StatusCode.BAD_REQUEST)
         }
         return ResponseData.ResponseHelpers.SetSuccessResponse(technicainData, res, StatusCode.OK)
+    },
+    TaskHistoryByTechnician: async (req: Request, res: Response, next: NextFunction) => {
+        const technicianId = req.params.technicianId
+        const technicianTask = await TechnicianServices.technicianServices.getTaskHistoryBytechnicianId(technicianId,'completed')
+        if (!technicianTask) {  
+            return ResponseData.ResponseHelpers.SetErrorResponse('Unable to get task', res, StatusCode.BAD_REQUEST)
+        }
+        return ResponseData.ResponseHelpers.SetSuccessResponse(technicianTask.data, res, StatusCode.OK)
     }
 }

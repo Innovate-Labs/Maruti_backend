@@ -32,7 +32,7 @@ export const TechnicianData = {
     }),
     Tasktechnician: async (req: Request, res: Response, next: NextFunction) => {
         const technicianId = req.params.technicianId
-        const technicianTask = await TechnicianServices.technicianServices.getTaskBytechnicianId(technicianId)
+        const technicianTask = await TechnicianServices.technicianServices.getTaskBytechnicianId(technicianId,'pending')
         if (!technicianTask) {
             return ResponseData.ResponseHelpers.SetErrorResponse('Unable to get task', res, StatusCode.BAD_REQUEST)
         }

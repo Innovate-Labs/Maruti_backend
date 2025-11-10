@@ -48,11 +48,12 @@ export const taskController = {
     },
     TaskPerform: async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { machine_id, steps_record, task_id } = req.body
+            const { machine_id, steps_record, taskId } = req.body
             const createtask = await TaskServices.taskServices.CreateStesps(req.body)
             if (!createtask) {
                return ResponseData.ResponseHelpers.SetErrorResponse('unable to create task', res, StatusCode.BAD_REQUEST)
             }
+            await TaskServices.taskServices.updatedTaskStatus(taskId,"completed")
             return ResponseData.ResponseHelpers.SetSuccessResponse(createtask, res, StatusCode.OK)
         } catch (error) {
             console.log(error)

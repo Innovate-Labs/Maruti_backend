@@ -97,9 +97,9 @@ export const technicianServices = {
     })
     return getTechnician
   },
-  getTaskBytechnicianId: async (technicianId: any) => {
+  getTaskBytechnicianId: async (technicianId: any,status:any) => {
     const result = await Task.findAll({
-      where: { technicianId },
+      where: { technicianId,status },
       include: [
         {
           model: Technician,

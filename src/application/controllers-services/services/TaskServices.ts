@@ -37,10 +37,13 @@ export const taskServices = {
 
     return result
   },
-  CreateStesps: async (data: any) => {
-    const result = MachineSteps.create(data)
-    return result;
-  },
+ CreateStesps: async (data: any) => {
+  const result = await MachineSteps.create({
+    ...data,
+    status: "complete",
+  });
+  return result;
+},
   GetTaskOverview: async (taskId: any) => {
     const result = await MachineSteps.findOne({
       where: { taskId },
@@ -131,5 +134,14 @@ export const taskServices = {
     console.error("❌ Error in UpdateNewTechnicianDetails:", error);
     throw error;
   }
+   },
+   updatedTaskStatus: async(taskId:any,status:any)=>{
+      const result = await Task.update(
+        { status },
+        {
+          where: { id: taskId },
+        }
+      );
+      return result;
    }
 }

@@ -73,11 +73,12 @@ export const taskServices = {
 
     return plainData;
   },
-   ChecktheTask: async(technicianId:any,machineId:any) =>{
+   ChecktheTask: async(technicianId:any,machineId:any,currentDate:any) =>{
       const task = await Task.findOne({
         where:{
           technicianId:technicianId,
-          machineId:machineId
+          machineId:machineId,
+          currentDate:currentDate
         }
       })
 

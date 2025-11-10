@@ -8,7 +8,7 @@ export const taskController = {
         try {
             const { technicianId, machineId, status, currentDate } = req.body
             
-            const checkCurrenttechnician = await TaskServices.taskServices.ChecktheTask(technicianId,machineId)
+            const checkCurrenttechnician = await TaskServices.taskServices.ChecktheTask(technicianId,machineId,currentDate)
             // const ardata = JSON.parse(JSON.stringify(checkCurrenttechnician))
             // console.log(JSON.parse(JSON.stringify(checkCurrenttechnician)))
             // console.log(ardata.machineId)

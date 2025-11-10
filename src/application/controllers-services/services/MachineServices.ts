@@ -75,6 +75,23 @@ export const MachineServices = {
           where:{
             serialNumber:serialNumber
           },
+              include: [
+      {
+        model: Plant,
+        as: "plants", // make sure this alias matches your association
+        attributes: ["id", "name"],
+      },
+      {
+        model: Shop,
+        as: "shops",
+        attributes: ["id", "name"],
+      },
+      {
+        model: Line,
+        as: "lines",
+        attributes: ["id", "lineName"],
+      },
+    ],
         })
         return machineData;
      }

@@ -13,12 +13,12 @@ export const taskController = {
             // console.log(JSON.parse(JSON.stringify(checkCurrenttechnician)))
             // console.log(ardata.machineId)
              if (checkCurrenttechnician) {
-             return   ResponseData.ResponseHelpers.SetErrorResponse('Task is already assigned to machine', res, StatusCode.BAD_REQUEST)
+             return   ResponseData.ResponseHelpers.SetErrorResponse('Technician is already assigned to this machine.', res, StatusCode.BAD_REQUEST)
             }
             const checkmachinealreadyassigned = await TaskServices.taskServices.AlreadyassignedTask(machineId)
             if(checkmachinealreadyassigned)
             {
-                const updatewithnewTechnician = await TaskServices.taskServices.UpdateNewTechnicianDetails(technicianId,machineId)
+                const updatewithnewTechnician = await TaskServices.taskServices.UpdateNewTechnicianDetails(technicianId,machineId,currentDate)
                 if(!updatewithnewTechnician){
               return  ResponseData.ResponseHelpers.SetErrorResponse('Error in updating technician task', res, StatusCode.BAD_REQUEST)
                 }

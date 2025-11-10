@@ -92,11 +92,11 @@ export const taskServices = {
 
        return machine
    },
-   UpdateNewTechnicianDetails: async(technicianId:any,machineId:any)=>{
+   UpdateNewTechnicianDetails: async(technicianId:any,machineId:any,currentDate:any)=>{
       try {
     // Step 1: Run update query
     const [affectedRows] = await Task.update(
-      { technicianId }, // ✅ maps to DB column 'technician_id'
+      { technicianId , currentDate }, // ✅ maps to DB column 'technician_id'
       {
         where: { machineId }, // ✅ maps to 'machine_id'
       }

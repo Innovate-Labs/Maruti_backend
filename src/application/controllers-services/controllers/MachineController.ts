@@ -48,17 +48,30 @@ export const MachineController = {
         }
     },
     GetSpecificMachine: async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const id = req.params.id
-        const data = await MachineServices.MachineServices.getSpecificMachineDataBySerialNumber(id)
-        if (!data) {
-            return ResponseData.ResponseHelpers.SetErrorResponse('Unable to get data', res, StatusCode.BAD_REQUEST)
+        try {
+            const id = req.params.id
+            const data = await MachineServices.MachineServices.getSpecificMachineDataBySerialNumber(id)
+            if (!data) {
+                return ResponseData.ResponseHelpers.SetErrorResponse('Unable to get data', res, StatusCode.BAD_REQUEST)
+            }
+            return ResponseData.ResponseHelpers.SetSuccessResponse(data, res, StatusCode.OK)
+        } catch (error) {
+            console.log(error)
+            throw error
         }
-        return ResponseData.ResponseHelpers.SetSuccessResponse(data, res, StatusCode.OK)
-    } catch (error) {
-        console.log(error)
-        throw error
+    },
+    GetMachineStepsDetails: async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const id = req.params.id
+            const data = await MachineServices.MachineServices.GetMachineHistroyDetails(id)
+            if (!data) {
+                return ResponseData.ResponseHelpers.SetErrorResponse('Unable to get data', res, StatusCode.BAD_REQUEST)
+            }
+            return ResponseData.ResponseHelpers.SetSuccessResponse(data, res, StatusCode.OK)
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
     }
-}
 
 }

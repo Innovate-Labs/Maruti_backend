@@ -1,7 +1,10 @@
 import { Line } from "@/models/line";
 import { Machine } from "@/models/machine"
+import { MachineSteps } from "@/models/machinesSteps";
 import { Plant } from "@/models/plant";
 import { Shop } from "@/models/shop";
+import { Task } from "@/models/task";
+import { Technician } from "@/models/technician";
 import { format } from "date-fns";
 
 
@@ -94,5 +97,28 @@ export const MachineServices = {
     ],
         })
         return machineData;
+     },
+     GetMachineHistroyDetails: async(serialNumber:any)=>{
+         const result = await Machine.findOne({
+            where:{serialNumber},
+            include:{
+              model:MachineSteps,
+              as:"machineSteps",
+              include:[
+                {
+                  model:Task,
+                  as:"task",
+                  include:[{
+                     model:Technician,
+                     as:"technician"
+                  }
+                  
+                ]
+                },
+              
+              ]
+            }
+         })
+         return result
      }
 }

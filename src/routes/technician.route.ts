@@ -26,4 +26,5 @@ router.get("/get-task-history-technician/:technicianId",
     technicianController.TechnicianData.TaskHistoryByTechnician
 )
 
+
 export default router;

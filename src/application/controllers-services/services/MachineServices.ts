@@ -123,7 +123,7 @@ export const MachineServices = {
      },
 getSpecificMachineDetails: async (id: any) => {
   const machineData = await MachineSteps.findOne({
-    where: { id },
+    where: { machineId: id },
   });
 
   if (!machineData) {

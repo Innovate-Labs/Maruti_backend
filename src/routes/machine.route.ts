@@ -23,4 +23,8 @@ machineController.MachineController.GetSpecificMachine
 router.get("/get-machine-history/:id",
     machineController.MachineController.GetMachineStepsDetails)
 
+router.get("/get-machine-overview-steps/:id",
+    machineController.MachineController.GetSpecificMAchineDetails
+)
+
 export default router;

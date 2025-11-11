@@ -120,5 +120,34 @@ export const MachineServices = {
             }
          })
          return result
-     }
+     },
+getSpecificMachineDetails: async (id: any) => {
+  const machineData = await MachineSteps.findOne({
+    where: { id },
+  });
+
+  if (!machineData) {
+    return null; // No record found
+  }
+
+  // ✅ Convert Sequelize model to plain JS object
+  const formattedData = machineData.toJSON();
+
+  // ✅ Parse stepsRecord safely
+  if (formattedData.stepsRecord) {
+    try {
+      formattedData.stepsRecord = typeof formattedData.stepsRecord === 'string' 
+        ? JSON.parse(formattedData.stepsRecord) 
+        : formattedData.stepsRecord;
+    } catch (error) {
+      console.error("❌ Error parsing stepsRecord:", error);
+      formattedData.stepsRecord = [];
+    }
+  } else {
+    formattedData.stepsRecord = [];
+  }
+
+  return formattedData;
+}
+      
 }

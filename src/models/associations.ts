@@ -16,7 +16,6 @@ Plant.hasMany(Shop, {
   onUpdate: "CASCADE",
 });
 
-
 Shop.belongsTo(Plant, {
   foreignKey: "plantId",
   as: "plant",
@@ -34,7 +33,6 @@ Line.belongsTo(Shop, {
   as: "shop",
 });
 
-
 Plant.hasMany(Line, {
   foreignKey: "plantId",
   as: "lines",
@@ -46,7 +44,6 @@ Line.belongsTo(Plant, {
   foreignKey: "plantId",
   as: "plant",
 });
-
 
 // Supervisor ↔ Plant (One-to-Many)
 Plant.hasMany(Supervisor, {
@@ -66,6 +63,8 @@ Supervisor.belongsToMany(Shop, {
   through: SupervisorShopLine,
   foreignKey: "superviseId",
   otherKey: "shopId",
+  onDelete: "CASCADE",
+  onUpdate: "CASCADE",
   as: "shops",
 });
 
@@ -74,6 +73,8 @@ Shop.belongsToMany(Supervisor, {
   foreignKey: "shopId",
   otherKey: "superviseId",
   as: "supervisors",
+  onDelete: "CASCADE",
+  onUpdate: "CASCADE",
 });
 
 Supervisor.belongsToMany(Line, {
@@ -101,9 +102,9 @@ Supervisor.belongsToMany(Technician, {
 
 Technician.belongsToMany(Supervisor, {
   through: TechnicianSupervisor,
-  foreignKey: "technicianId",  // maps to technician ID
-  otherKey: "superviseId",     // maps to supervisor ID
-  as: "supervisors",           // technician.supervisors[]
+  foreignKey: "technicianId", // maps to technician ID
+  otherKey: "superviseId", // maps to supervisor ID
+  as: "supervisors", // technician.supervisors[]
   onDelete: "CASCADE",
   onUpdate: "CASCADE",
 });
@@ -149,7 +150,6 @@ Machine.belongsTo(Line, {
   as: "lines",
 });
 
-
 // One Machine has many MachineSteps
 Machine.hasMany(MachineSteps, {
   foreignKey: "machineId",
@@ -178,7 +178,6 @@ Task.belongsTo(Machine, {
   as: "machine",
 });
 
-
 // -------------------- MachineSteps ↔ Task Relationships --------------------
 
 // One MachineStep has many Tasks
@@ -194,7 +193,6 @@ Task.belongsTo(Machine, {
 //   foreignKey: "stepsId",
 //   as: "step",
 // });
-
 
 // -------------------- Technician ↔ Task Relationships --------------------
 
@@ -238,6 +236,8 @@ SupervisorShopLine.belongsTo(Supervisor, {
 SupervisorShopLine.belongsTo(Shop, {
   foreignKey: "shop_id",
   as: "shop",
+  onDelete: "CASCADE",
+  onUpdate: "CASCADE",
 });
 
 SupervisorShopLine.belongsTo(Line, {
@@ -246,8 +246,8 @@ SupervisorShopLine.belongsTo(Line, {
 });
 
 Technician.hasMany(TechnicianSupervisor, {
-  foreignKey: "technicianId",     // ✅ must match your field name in TechnicianSupervisor.init()
-  as: "techniciansupervisors",    // ✅ this alias must match your include "as"
+  foreignKey: "technicianId", // ✅ must match your field name in TechnicianSupervisor.init()
+  as: "techniciansupervisors", // ✅ this alias must match your include "as"
 });
 
 TechnicianSupervisor.belongsTo(Technician, {

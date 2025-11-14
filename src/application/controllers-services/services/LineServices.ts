@@ -30,5 +30,18 @@ export const LineServicesData = {
         }
       })
       return getlinedata
+    },
+    UpdateLine: async(id:string,updateData:Partial<{ name:string; lineId:string; shopId:string }>)=>{
+      const data = await Line.update(updateData,{
+          where:{id}
+      })
+      console.log(data)
+      return data
+    },
+    DeleteLine: async(id:string)=>{
+      const data = await Line.destroy({
+          where:{id}
+      })
+      return data
     }
 }

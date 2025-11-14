@@ -16,4 +16,12 @@ lineController.LineData.getLineData
 router.get("/get-line-shop/:shopId",
 lineController.LineData.getLineByshop)
 
+router.post("/edit-line/:id",
+   lineController.LineData.EditLine
+)
+
+router.delete("/delete-line/:id",
+   lineController.LineData.DeleteLine
+)
+
 export default router;

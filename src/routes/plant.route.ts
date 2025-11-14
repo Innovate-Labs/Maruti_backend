@@ -13,4 +13,10 @@ plantController.PlantController.createPlant)
 router.get("/get-all-plant",
  plantController.PlantController.getAllplant)
 
+router.post("/edit-plant/:id",
+   plantController.PlantController.EditPlant )
+
+router.delete("/delete-plant/:id",
+   plantController.PlantController.DeletePlant)
+
 export default router;

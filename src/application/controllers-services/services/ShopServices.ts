@@ -94,5 +94,17 @@ export const shopServicesData = {
     getallShops:async()=>{
         const shop = await Shop.findAll()
         return shop
+    },
+    UpdateShop:async(id:string,updateData:Partial<{ name: string; plantId: string }>)=>{
+        const data = await Shop.update(updateData,{
+            where:{id}
+        })
+        return data
+    },
+    DeleteShop:async(id:string)=>{
+        const data = await Shop.destroy({
+            where:{id}
+        })
+        return data
     }
 }

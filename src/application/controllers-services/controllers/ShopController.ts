@@ -38,5 +38,25 @@ export const ShopData = {
         }
         return ResponseData.ResponseHelpers.SetSuccessResponse(allshops, res, StatusCode.OK)
 
-    })
+    }),
+    ShopEdit: TryCatch(async (req: Request, res: Response, next: NextFunction) => {
+        const { id } = req.params
+        const updateData = req.body
+        const data = await ShopServices.shopServicesData.UpdateShop(id, updateData)
+        if (!data) {
+            return ResponseData.ResponseHelpers.SetErrorResponse("Error in data creating", res, StatusCode.BAD_REQUEST)
+        }
+        return ResponseData.ResponseHelpers.SetSuccessResponse("Shop Updated Successfully", res, StatusCode.OK)
+        }
+    ),
+    ShopDelete: TryCatch(async (req: Request, res: Response, next: NextFunction) => {
+        const { id } = req.params
+        const data = await ShopServices.shopServicesData.DeleteShop(id)
+        if (!data) {
+            return ResponseData.ResponseHelpers.SetErrorResponse("Error in data creating", res, StatusCode.BAD_REQUEST)
+        }
+        return ResponseData.ResponseHelpers.SetSuccessResponse("Shop Deleted Successfully", res, StatusCode.OK)
+        }
+    ),
+
 }

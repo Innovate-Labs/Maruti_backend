@@ -5,7 +5,7 @@ import { Router } from "express";
 const router = Router();
 
 router.post("/supervisor-create",
-validateSchema(SchemaValidation.BodySchema.Supervisor),
+// validateSchema(SchemaValidation.BodySchema.Supervisor),
 supervisorController.SupervisorData.AddSupervisor)
 
 router.get("/get-supervisor-details",

@@ -25,5 +25,27 @@ export const PlantController = {
              return ResponseData.ResponseHelpers.SetErrorResponse("Error in data creating",res,StatusCode.BAD_REQUEST)
          }
          return ResponseData.ResponseHelpers.SetSuccessResponse(data,res,StatusCode.OK)
-    })
+    }),
+
+    EditPlant : TryCatch(async(req:Request,res:Response,next:NextFunction)=>{
+         const {id} = req.params
+         const updateData = req.body
+         const data = await PlantServices.PlantServicesData.UpdatePlantUser(id,updateData)
+         console.log('PPPPPPPP',data)
+         if(!data) {
+             return ResponseData.ResponseHelpers.SetErrorResponse("Error in data creating",res,StatusCode.BAD_REQUEST)
+         }
+         return ResponseData.ResponseHelpers.SetSuccessResponse("Plant Updated Successfully",res,StatusCode.OK)
+    }),
+
+    DeletePlant: TryCatch(async(req:Request,res:Response,next:NextFunction)=>{
+            const {id} = req.params
+            const data = await PlantServices.PlantServicesData.DeletePlantUser(id)  
+            if(!data) {
+                return ResponseData.ResponseHelpers.SetErrorResponse("Error in data deleting",res,StatusCode.BAD_REQUEST)
+            }
+            return ResponseData.ResponseHelpers.SetSuccessResponse("Plant Deleted Successfully",res,StatusCode.OK)
+            })
+
+
 }

@@ -21,5 +21,11 @@ shopController.ShopData.getShopsByPlantId
 router.get("/get-all-shops",
     shopController.ShopData.getAllShops
 )
+router.post("/edit-shop/:id",
+   shopController.ShopData.ShopEdit 
+)
+router.delete("/delete-shop/:id",
+   shopController.ShopData.ShopDelete
+)
 
 export default router;

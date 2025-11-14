@@ -17,5 +17,21 @@ export const PlantServicesData = {
     ],
        })
        return plantdata
+    },
+    UpdatePlantUser: async(id:string,updateData:Partial<{ name: string; description: string }>)=>{
+      console.log('FFFFFF',updateData)
+      const data = await Plant.update(updateData,{
+          where:{id}
+      })
+      console.log('PPPPzzz',data)
+      return data
+    },
+
+    DeletePlantUser:async(id:string)=>{
+        const data = await Plant.destroy({
+            where:{id}
+        })
+        return data
     }
-}
+
+  }

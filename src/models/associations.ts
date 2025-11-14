@@ -109,12 +109,27 @@ Line.belongsToMany(Supervisor, {
 
 
 // -------------------- SUPERVISOR_SHOP_LINE (Direct Relations) --------------------
-SupervisorShopLine.belongsTo(Supervisor, {
+// SupervisorShopLine.belongsTo(Supervisor, {
+//   foreignKey: "superviseId",
+//   as: "supervisor",
+//   onDelete: "CASCADE",
+//   onUpdate: "CASCADE",
+// });
+
+Supervisor.hasMany(SupervisorShopLine, {
   foreignKey: "superviseId",
-  as: "supervisor",
+  as: "superpersives",
   onDelete: "CASCADE",
   onUpdate: "CASCADE",
 });
+
+SupervisorShopLine.belongsTo(Supervisor, {
+  foreignKey: "superviseId",
+  as: "superpersives",
+  onDelete: "CASCADE",
+  onUpdate: "CASCADE",
+});
+
 
 SupervisorShopLine.belongsTo(Shop, {
   foreignKey: "shop_id",

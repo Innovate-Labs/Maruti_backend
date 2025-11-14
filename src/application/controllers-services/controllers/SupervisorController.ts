@@ -64,39 +64,39 @@ export const SupervisorData = {
           StatusCode.BAD_REQUEST
         );
       }
-      const supervisors = JSON.parse(JSON.stringify(data.data));
+    //   const supervisors = JSON.parse(JSON.stringify(data.data));
 
   // ⭐ GROUPING LOGIC FOR EACH SUPERVISOR ⭐
-  const finalResponse = supervisors.map((sup: any) => {
-    const grouped:any = {};
+//   const finalResponse = supervisors.map((sup: any) => {
+//     const grouped:any = {};
 
-    sup.superpersives.forEach((item: any) => {
-      const shopId = item.shopId;
+//     sup.superpersives.forEach((item: any) => {
+//       const shopId = item.shopId;
 
-      if (!grouped[shopId]) {
-        grouped[shopId] = {
-          shopId: item.shopId,
-          shopName: item.shop?.name,
-          lines: []
-        };
-      }
+//       if (!grouped[shopId]) {
+//         grouped[shopId] = {
+//           shopId: item.shopId,
+//           shopName: item.shop?.name,
+//           lines: []
+//         };
+//       }
 
-      grouped[shopId].lines.push({
-        lineId: item.lineId
-      });
-    });
+//       grouped[shopId].lines.push({
+//         lineId: item.lineId
+//       });
+//     });
 
-    return {
-      ...sup,
-      superpersives: Object.values(grouped)
-    };
-  });
+//     return {
+//       ...sup,
+//       superpersives: Object.values(grouped)
+//     };
+//   });
 
-  return ResponseData.ResponseHelpers.SetSuccessResponse(
-    { success: true, data: finalResponse },
-    res,
-    StatusCode.OK
-  );
+//   return ResponseData.ResponseHelpers.SetSuccessResponse(
+//     { success: true, data: finalResponse },
+//     res,
+//     StatusCode.OK
+//   );
       return ResponseData.ResponseHelpers.SetSuccessResponse(
         data,
         res,

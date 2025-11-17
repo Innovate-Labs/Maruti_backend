@@ -16,4 +16,8 @@ router.get("/get-supervisor-details-only",
     supervisorController.SupervisorData.GetAllSupervisorDetails
 )
 
+router.post("/edit-supervisor/:id",
+   supervisorController.SupervisorData.EditSupervisor
+)
+
 export default router;

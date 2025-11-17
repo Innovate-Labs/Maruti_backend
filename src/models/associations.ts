@@ -253,3 +253,24 @@ MachineSteps.belongsTo(Task, {
   foreignKey: "taskId",
   as: "task",
 });
+
+Technician.hasMany(TechnicianSupervisor, {
+  foreignKey: "technicianId",
+  as: "techniciansupervisors",
+});
+
+TechnicianSupervisor.belongsTo(Technician, {
+  foreignKey: "technicianId",
+  as: "technician",
+});
+
+Supervisor.hasMany(TechnicianSupervisor, {
+  foreignKey: "superviseId",
+  as: "techniciansupervisors",
+});
+
+TechnicianSupervisor.belongsTo(Supervisor, {
+  foreignKey: "superviseId",
+  as: "supervisor",
+});
+

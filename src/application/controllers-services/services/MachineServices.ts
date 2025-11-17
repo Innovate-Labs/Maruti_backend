@@ -148,6 +148,20 @@ getSpecificMachineDetails: async (id: any) => {
   }
 
   return formattedData;
-}
+},
+
+UpdateMachine: async (id: string, data: any) => {
+  const result = await Machine.update(data, {
+    where: { id },
+  });
+  return result; // Returns true if any rows were updated
+},
+
+DeleteMachine: async (id: string) => {
+  const result = await Machine.destroy({
+    where: { id },
+  });
+  return result;
+},
       
 }

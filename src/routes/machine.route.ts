@@ -27,4 +27,12 @@ router.get("/get-machine-overview-steps/:id",
     machineController.MachineController.GetSpecificMAchineDetails
 )
 
+router.post("/edit-machine/:id",
+   machineController.MachineController.EditMachine
+)
+
+router.delete("/delete-machine/:id",
+   machineController.MachineController.DeleteMachine
+)
+
 export default router;

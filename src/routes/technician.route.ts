@@ -26,5 +26,13 @@ router.get("/get-task-history-technician/:technicianId",
     technicianController.TechnicianData.TaskHistoryByTechnician
 )
 
+router.post("/edit-technician/:id",
+    technicianController.TechnicianData.EditTechnician
+)
+
+router.delete("/delete-technician/:id",
+    technicianController.TechnicianData.DeleteTechnician
+)
+
 
 export default router;

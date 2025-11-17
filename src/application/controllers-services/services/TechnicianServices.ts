@@ -270,4 +270,35 @@ export const technicianServices = {
     };
 
   },
+  UpdateTechnician:async(id:string,updateData:Partial<{ name:string; email:string; contact_no:string; employeeId:string; plantId:string}>)=>{
+    const data = await Technician.update(updateData,{
+        where:{id}
+    })
+    return data
+  },
+  UpdateTechnicianSupervisor:async(technicianId:string,superviseId:string[])=>{
+    try {
+      console.log('superrrrr',superviseId)
+      await TechnicianSupervisor.destroy({
+        where: { technicianId },
+      });
+      const entries = [];
+      for (let i = 0; i < superviseId.length; i++) {
+        entries.push({
+          technicianId,
+          superviseId: superviseId[i],
+        });
+      }
+      return TechnicianSupervisor.bulkCreate(entries);
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  },
+  DeleteTechnician:async(id:string)=>{
+    const data = await Technician.destroy({
+        where:{id}
+    })
+    return data
+  }
 }

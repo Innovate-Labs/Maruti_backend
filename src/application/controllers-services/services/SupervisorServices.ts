@@ -196,13 +196,105 @@ export const supervisorServicesData = {
   GetAllSupervisorDetailsOnly: async()=>{
       return await Supervisor.findAll()
   },
-  UpdateSupervisor: async(id:string,updateData:Partial<{ name:string; employeeId:string; email:string; plant_id:string; contactNo:string; password:string }>)=>{
+  UpdateSupervisor: async(id:string,updateData:Partial<{ name:string; employeeId:string; email:string; plant_id:string; contactNo:string; }>)=>{
     const data = await Supervisor.update(updateData,{
         where:{id}
     })
     console.log(data)
     return data
   },
+
+// UpdateShopLine: async (
+//   superviseId: string,
+//   updateData: Partial<{ shopId: string[]; lineId: string[] }>
+// ) => {
+//   const newShopIds = [...new Set(updateData.shopId || [])]; // Remove duplicates
+//   const newLineIds = [...new Set(updateData.lineId || [])]; // Remove duplicates
+
+//   // Get existing mappings
+//   const existing = await SupervisorShopLine.findAll({
+//     where: { superviseId },
+//   });
+
+//   const existingShopIds = existing
+//     .map((r: any) => r.shop_id)
+//     .filter(Boolean);
+
+//   const existingLineIds = existing
+//     .map((r: any) => r.line_id)
+//     .filter(Boolean);
+
+//   // ---------------------- SHOPS ----------------------
+
+//   // Find shops to remove
+//   const shopsToRemove = existingShopIds.filter(
+//     (id) => !newShopIds.includes(id)
+//   );
+
+//   if (shopsToRemove.length > 0) {
+//     await SupervisorShopLine.destroy({
+//       where: {
+//         superviseId,
+//         shopId: shopsToRemove,
+//       },
+//     });
+//   }
+
+//   // Add new shops (only if not already present)
+//   for (const shopId of newShopIds) {
+//     const exists = await SupervisorShopLine.findOne({
+//       where: { superviseId, shopId: shopId },
+//     });
+
+//     if (!exists) {
+//       await SupervisorShopLine.create({
+//         superviseId,
+//         shopId: shopId,
+//         lineId: ""
+//       });
+//     }
+//   }
+
+//   // ---------------------- LINES ----------------------
+
+//   // Find lines to remove
+//   const linesToRemove = existingLineIds.filter(
+//     (id) => !newLineIds.includes(id)
+//   );
+
+//   if (linesToRemove.length > 0) {
+//     await SupervisorShopLine.destroy({
+//       where: {
+//         superviseId,
+//         lineId: linesToRemove,
+//       },
+//     });
+//   }
+
+//   // Add new lines (only if not already present)
+//   for (const lineId of newLineIds) {
+//     const exists = await SupervisorShopLine.findOne({
+//       where: { superviseId, lineId: lineId },
+//     });
+
+//     if (!exists) {
+//       await SupervisorShopLine.create({
+//         superviseId,
+//         lineId: lineId,
+//       });
+//     }
+//   }
+
+//   return {
+//     success: true,
+//     message: "Supervisor shop/line mapping updated successfully",
+//     updatedShops: newShopIds,
+//     updatedLines: newLineIds,
+//   };
+// };
+
+
+
 
 GetLinesForShops: async (shopIds: string[]) => {
   return Line.findAll({
@@ -229,6 +321,30 @@ AddShopLine:async(lineIds: string[], shopIds: string[], superviseId: string)=>{
   return SupervisorShopLine.bulkCreate(entries, {
     ignoreDuplicates: true,
   });
+},
+
+UpdateShopLine: async (lineIds: string[], shopIds: string[], superviseId: string) => {
+
+  // Step 1: Remove all old mappings
+  await SupervisorShopLine.destroy({
+    where: { superviseId }
+  });
+
+  // Step 2: Create new mapping rows
+  const entries = [];
+
+  for (let i = 0; i < shopIds.length; i++) {
+    entries.push({
+      superviseId,
+      shopId: shopIds[i],
+      lineId: lineIds[i],
+    });
+  }
+
+  // Insert new pairs
+  return SupervisorShopLine.bulkCreate(entries);
+
 }
+
   
 }

@@ -59,5 +59,24 @@ export const TechnicianData = {
             return ResponseData.ResponseHelpers.SetErrorResponse('Unable to get task', res, StatusCode.BAD_REQUEST)
         }
         return ResponseData.ResponseHelpers.SetSuccessResponse(technicianTask.data, res, StatusCode.OK)
-    }
+    },
+    EditTechnician : TryCatch(async(req:Request,res:Response,next:NextFunction)=>{
+         const {id} = req.params
+         const updateData = req.body
+         const data = await TechnicianServices.technicianServices.UpdateTechnician(id,updateData)
+            if(!data) {
+                return ResponseData.ResponseHelpers.SetErrorResponse("Error in updating",res,StatusCode.BAD_REQUEST)
+            }
+            await TechnicianServices.technicianServices.UpdateTechnicianSupervisor(id,updateData.supervisior)
+            return ResponseData.ResponseHelpers.SetSuccessResponse("Technician Updated Successfully",res,StatusCode.OK)
+    }),
+    DeleteTechnician: TryCatch(async(req:Request,res:Response,next:NextFunction)=>{
+            const {id} = req.params
+            const data = await TechnicianServices.technicianServices.DeleteTechnician(id)  
+            if(!data) {
+                return ResponseData.ResponseHelpers.SetErrorResponse("Error in data deleting",res,StatusCode.BAD_REQUEST)
+            }
+            return ResponseData.ResponseHelpers.SetSuccessResponse("Technician Deleted Successfully",res,StatusCode.OK)
+            })
+
 }

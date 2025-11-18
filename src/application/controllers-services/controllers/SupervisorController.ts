@@ -153,4 +153,13 @@ export const SupervisorData = {
       );
     }
   ),
+ DeleteSupervisor: TryCatch(
+    async (req: Request, res: Response, next: NextFunction) => {
+      const { id } = req.params;
+        const data = await SupervisorServices.supervisorServicesData.DeleteSupervisor(id)
+        if(!data) {
+            return ResponseData.ResponseHelpers.SetErrorResponse("Error in data deleting",res,StatusCode.BAD_REQUEST)
+        }
+        return ResponseData.ResponseHelpers.SetSuccessResponse("Supervisor Deleted Successfully",res,StatusCode.OK)
+    })
 };

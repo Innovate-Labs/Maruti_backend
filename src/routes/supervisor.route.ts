@@ -20,4 +20,8 @@ router.post("/edit-supervisor/:id",
    supervisorController.SupervisorData.EditSupervisor
 )
 
+router.delete("/delete-supervisor/:id",
+   supervisorController.SupervisorData.DeleteSupervisor
+)
+
 export default router;

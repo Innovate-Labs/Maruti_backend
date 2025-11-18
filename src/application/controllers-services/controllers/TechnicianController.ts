@@ -77,6 +77,16 @@ export const TechnicianData = {
                 return ResponseData.ResponseHelpers.SetErrorResponse("Error in data deleting",res,StatusCode.BAD_REQUEST)
             }
             return ResponseData.ResponseHelpers.SetSuccessResponse("Technician Deleted Successfully",res,StatusCode.OK)
-            })
-
+            }),
+    ResetPassword: TryCatch(async (req: Request, res: Response, next: NextFunction) => {
+        const {id} = req.params
+        const { password } = req.body
+        const data = await TechnicianServices.technicianServices.UpdateTechnicianPassword(id,password)
+        if (!data) {
+            return ResponseData.ResponseHelpers.SetErrorResponse("Error in updating password", res, StatusCode.BAD_REQUEST)
+        }
+        return ResponseData.ResponseHelpers.SetSuccessResponse("Password Updated Successfully", res, StatusCode.OK)
+    }
+)
+     
 }

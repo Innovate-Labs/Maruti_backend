@@ -34,5 +34,9 @@ router.delete("/delete-technician/:id",
     technicianController.TechnicianData.DeleteTechnician
 )
 
+router.post("/reset-password-technician/:id",
+    technicianController.TechnicianData.ResetPassword
+)
+
 
 export default router;

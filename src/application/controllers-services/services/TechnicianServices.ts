@@ -300,5 +300,11 @@ export const technicianServices = {
         where:{id}
     })
     return data
+  },
+  UpdateTechnicianPassword: async(id:string,password:string)=>{
+    const data = await Technician.update({password},{
+        where:{id}
+    })
+    return data
   }
 }

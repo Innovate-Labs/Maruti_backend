@@ -168,6 +168,11 @@ export const supervisorServicesData = {
               as: "shop",
               attributes: ["id", "name"],
             },
+            {
+              model: Line,
+              as: "line",
+              attributes: ["id", "lineName"],
+            },
 
           ],
         },
@@ -344,6 +349,13 @@ UpdateShopLine: async (lineIds: string[], shopIds: string[], superviseId: string
   // Insert new pairs
   return SupervisorShopLine.bulkCreate(entries);
 
+},
+
+DeleteSupervisor: async(id:string)=>{
+  const data = await Supervisor.destroy({
+      where:{id}  
+  })
+  return data
 }
 
   

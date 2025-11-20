@@ -165,86 +165,118 @@ createTask: async (req: Request, res: Response, next: NextFunction) => {
   try {
     let { technicianId, machineId, status, currentDate, originalDate, occurrenceId } = req.body;
 
-    const formattedDateTime = dayjs(currentDate).format("YYYY-MM-DD HH:mm:ss");
+    const formattedDateTime = dayjs(currentDate)
+      .local()
+      .format("YYYY-MM-DD HH:mm:ss");
 
-    // -------------------------------
-    // 1. STRICT CHECK — EXACT DATE + TIME
-    // -------------------------------
-    const existingTaskForOccurrence = await Task.findOne({
+    console.log("Requested IST Time:", formattedDateTime);
+
+    // ---------------------------------------------------
+    // FIND ANY TASK FOR SAME MACHINE + SAME TECHNICIAN
+    // ---------------------------------------------------
+    const existingTaskD = await Task.findOne({
       where: {
         machineId,
-        technicianId,
-        currentDate: formattedDateTime       // DB column name
+        technicianId
       }
     });
 
-    if (existingTaskForOccurrence) {
-      return ResponseData.ResponseHelpers.SetSuccessResponse(
-        "Task Already scheduled Successfully",
-        res,
-        StatusCode.OK
-      );
-    }
+    const machineOccuranceCheck = await MachineOccurence.findOne({
+         where:{
+          machineId,
+          technicianId,
+          id:occurrenceId
+         }
+    })
 
-    // -------------------------------
-    // 2. Same DATE but different TIME
-    // -------------------------------
-    const existingTaskForOccurrenceDate = await Task.findOne({
-      where: {
+    console.log(existingTaskD)
+
+    const existingTask = JSON.parse(JSON.stringify(existingTaskD))
+
+    // ---------------------------------------------------
+    // CASE A → No previous task → CREATE NEW
+    // ---------------------------------------------------
+    if (!existingTaskD && !machineOccuranceCheck) {
+      const newTask = await Task.create({
+        technicianId,
         machineId,
-        technicianId,
-        [Op.and]: [
-          Sequelize.where(
-            Sequelize.fn("DATE", Sequelize.col("current_date")),
-            dayjs(formattedDateTime).format("YYYY-MM-DD")
-          ),
-          Sequelize.where(
-            Sequelize.fn("TIME", Sequelize.col("current_date")),
-            "!=",
-            dayjs(formattedDateTime).format("HH:mm:ss")
-          ),
-        ],
-      },
-    });
+        status,
+        currentDate: formattedDateTime
+      });
 
-    if (existingTaskForOccurrenceDate) {
+      const newTaskData = JSON.parse(JSON.stringify(newTask))
+
+      await MachineOccurence.update({
+         rescheduledDate:currentDate,
+         taskId:newTaskData.id,
+         technicianId:technicianId
+      },{where:{id:occurrenceId}})
+
       return ResponseData.ResponseHelpers.SetSuccessResponse(
-        "Task time change scheduled Successfully",
+        "New task scheduled successfully",
         res,
         StatusCode.OK
       );
     }
 
-    // -------------------------------
-    // 3. CREATE NEW ENTRY (correct way)
-    // -------------------------------
-    const newTask = await Task.create({
-      technicianId,
-      machineId,
-      status,
-      currentDate: formattedDateTime        // FIXED
-    });
+    // ---------------------------------------------------
+    // CASE B → TASK EXISTS → CHECK DATE/TIME CHANGES
+    // ---------------------------------------------------
+    const oldDate = dayjs(existingTask.currentDate).format("YYYY-MM-DD");
+    const oldTime = dayjs(existingTask.currentDate).format("HH:mm:ss");
 
-    await MachineOccurence.update(
-      {
-        taskId: newTask.id,
-        rescheduledDate: formattedDateTime,   // FIXED
-        technicianId,
-        status: "assigned",
-      },
-      { where: { id: occurrenceId } }
-    );
+    const newDate = dayjs(formattedDateTime).format("YYYY-MM-DD");
+    const newTime = dayjs(formattedDateTime).format("HH:mm:ss");
 
-    return ResponseData.ResponseHelpers.SetSuccessResponse(
-      newTask,
-      res,
-      StatusCode.OK
-    );
+    // --------------------------
+    // SAME DATE & SAME TIME
+    // --------------------------
+    if (oldDate === newDate && oldTime === newTime) {
+      return ResponseData.ResponseHelpers.SetSuccessResponse(
+        "Task already scheduled successfully",
+        res,
+        StatusCode.OK
+      );
+    }
+
+    // --------------------------
+    // SAME DATE but TIME changed
+    // --------------------------
+    if (oldDate === newDate && oldTime !== newTime) {
+      // await existingTask.update({
+      //   currentDate: formattedDateTime,
+      //   status
+      // });
+
+      return ResponseData.ResponseHelpers.SetSuccessResponse(
+        "Task time updated successfully",
+        res,
+        StatusCode.OK
+      );
+    }
+
+    // --------------------------
+    // DATE is also changed → rescheduled
+    // --------------------------
+    if (oldDate !== newDate) {
+      // await existingTask.update({
+      //   currentDate: formattedDateTime,
+      //   status
+      // });
+
+      return ResponseData.ResponseHelpers.SetSuccessResponse(
+        "Task rescheduled successfully",
+        res,
+        StatusCode.OK
+      );
+    }
+
   } catch (error) {
     console.log(error);
     throw error;
   }
 }
+
 
 
 // createTask: async (req: Request, res: Response, next: NextFunction) => {

@@ -6,6 +6,7 @@ import * as Supervisor from './supervisor'
 import * as SupervisorShopLine from './supervisor_shop_line'
 import * as Machine from './machine'
 import * as MachineSteps from './machinesSteps'
+import * as MahcineOccurence from './machineOccurence'
 
 import "./associations";
 import { sequelize } from '@/database/db.config'
@@ -20,6 +21,7 @@ export {
     SupervisorShopLine,
     Machine,
     MachineSteps,
+    MahcineOccurence,
     sequelize
 }
 

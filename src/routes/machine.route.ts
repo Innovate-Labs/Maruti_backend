@@ -35,4 +35,8 @@ router.delete("/delete-machine/:id",
    machineController.MachineController.DeleteMachine
 )
 
+router.get("/machine-calendar-view",
+    machineController.MachineController.GetMachineOccurrences
+)
+
 export default router;

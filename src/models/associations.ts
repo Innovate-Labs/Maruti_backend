@@ -1,5 +1,6 @@
 import { Line } from "./line";
 import { Machine } from "./machine";
+import { MachineOccurence } from "./machineOccurence";
 import { MachineSteps } from "./machinesSteps";
 import { Plant } from "./plant";
 import { Shop } from "./shop";
@@ -274,3 +275,34 @@ TechnicianSupervisor.belongsTo(Supervisor, {
   as: "supervisor",
 });
 
+Machine.hasMany(MachineOccurence, {
+  foreignKey: "machineId",
+  as: "occurrences",
+});
+
+MachineOccurence.belongsTo(Machine, {
+  foreignKey: "machineId",
+  as: "machine",
+});
+
+Technician.hasMany(MachineOccurence, {
+  foreignKey: "technicianId",
+  as: "occurrences",
+});
+
+MachineOccurence.belongsTo(Technician, {
+  foreignKey: "technicianId",
+  as: "technician",
+});
+
+Task.hasOne(MachineOccurence, {
+  foreignKey: "taskId",
+  as: "occurrence",
+  onDelete: "CASCADE",
+  onUpdate: "CASCADE",
+});
+
+MachineOccurence.belongsTo(Task, {
+  foreignKey: "taskId",
+  as: "task",
+});

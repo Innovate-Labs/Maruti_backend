@@ -332,5 +332,103 @@ getOccurrencesByRange: async (start: string, end: string) => {
       order: [["scheduledDate", "ASC"]],
     });
   },
+MachineCriticalityLevels: async () => {
+   const result = await MachineSteps.findAll({
+    include: [
+      {
+        model: Machine,
+        as: "machine",
+        attributes: ["id", "machineName", "serialNumber"],
+      }
+    ]
+  });
+
+  let overallCriticalCount = 0;   // ⭐ GLOBAL COUNT
+
+  const formatted = result.map((item: any) => {
+    const plain = item.toJSON();
+
+    // --------- PARSE stepsRecord ----------
+    let steps = [];
+
+    try {
+      steps = plain.stepsRecord
+        ? (typeof plain.stepsRecord === "string"
+            ? JSON.parse(plain.stepsRecord)
+            : plain.stepsRecord)
+        : [];
+    } catch (err) {
+      steps = [];
+    }
+
+    // --------- COUNT CRITICAL ALERTS ----------
+    const criticalCount = steps.filter(
+      (s: any) => s.rating === 1 || s.rating === 2
+    ).length;
+
+    // Add to global count
+    overallCriticalCount += criticalCount;
+
+    return {
+      ...plain,
+      stepsRecord: steps,
+      criticalCount,   // machine-level count
+    };
+  });
+
+  return {
+    machines: formatted,
+    overallCriticalCount,   // ⭐ total of all machines
+  }
+},
+UpdateMachineCriticalityLevel: async (
+  id: string,
+  stepDescription: string,
+  updatedData: { comment?: string; rating?: number; parameterValue?: string }
+) => {
+  try {
+    // 1️⃣ Fetch row from DB
+    const record = await MachineSteps.findOne({ where: { id } });
+
+    if (!record) {
+      return { success: false, message: "Record not found" };
+    }
+
+    // 2️⃣ Read raw string from DB
+    const rawSteps:any = record.get("stepsRecord");
+
+    // 3️⃣ Convert string → array
+    let steps = JSON.parse(rawSteps);
+
+    // 4️⃣ Find step
+    const stepIndex = steps.findIndex(
+      (s: any) => s.stepDescription.trim() === stepDescription.trim()
+    );
+
+    if (stepIndex === -1) {
+      return { success: false, message: "Step not found" };
+    }
+
+    // 5️⃣ Update JSON
+    steps[stepIndex] = { ...steps[stepIndex], ...updatedData };
+
+    // 6️⃣ Save back — RAW QUERY BYPASS (always works)
+    await MachineSteps.update(
+      { stepsRecord: JSON.stringify(steps) as any },
+      { where: { id } }
+    );
+
+    return {
+      success: true,
+      message: "Step updated successfully",
+      updatedStep: steps[stepIndex]
+    };
+
+  } catch (error) {
+    console.error("Update error:", error);
+    return { success: false, message: "Internal server error" };
+  }
+}
+
       
 }

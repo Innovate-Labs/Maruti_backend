@@ -243,10 +243,18 @@ createTask: async (req: Request, res: Response, next: NextFunction) => {
     // SAME DATE but TIME changed
     // --------------------------
     if (oldDate === newDate && oldTime !== newTime) {
-      // await existingTask.update({
-      //   currentDate: formattedDateTime,
-      //   status
-      // });
+      await Task.update({
+        currentDate: formattedDateTime,
+        status
+      },{
+        where:{id:existingTask.id}
+      });
+            await MachineOccurence.update({
+         rescheduledDate:currentDate,
+      },{where:{id:occurrenceId,
+            taskId:existingTask.id,
+
+      }})
 
       return ResponseData.ResponseHelpers.SetSuccessResponse(
         "Task time updated successfully",
@@ -259,11 +267,18 @@ createTask: async (req: Request, res: Response, next: NextFunction) => {
     // DATE is also changed → rescheduled
     // --------------------------
     if (oldDate !== newDate) {
-      // await existingTask.update({
-      //   currentDate: formattedDateTime,
-      //   status
-      // });
+     await Task.update({
+        currentDate: formattedDateTime,
+        status
+      },{
+        where:{id:existingTask.id}
+      });
+             await MachineOccurence.update({
+         rescheduledDate:currentDate,
+      },{where:{id:occurrenceId,
+            taskId:existingTask.id,
 
+      }})
       return ResponseData.ResponseHelpers.SetSuccessResponse(
         "Task rescheduled successfully",
         res,
@@ -434,7 +449,7 @@ createTask: async (req: Request, res: Response, next: NextFunction) => {
     },
     TaskPerform: async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { machine_id, steps_record, taskId } = req.body
+            const { machine_id, steps_record, taskId,occuranceMachineId } = req.body
             const createtask = await TaskServices.taskServices.CreateStesps(req.body)
             if (!createtask) {
                return ResponseData.ResponseHelpers.SetErrorResponse('unable to create task', res, StatusCode.BAD_REQUEST)

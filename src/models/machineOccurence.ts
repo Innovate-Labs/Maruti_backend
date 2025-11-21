@@ -84,6 +84,7 @@ MachineOccurence.init(
             onDelete: "CASCADE",
             onUpdate: "CASCADE",
         },
+         
         status: {
             type: DataTypes.STRING,
             allowNull: true

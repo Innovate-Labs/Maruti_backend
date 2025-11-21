@@ -306,3 +306,19 @@ MachineOccurence.belongsTo(Task, {
   foreignKey: "taskId",
   as: "task",
 });
+
+// -------------------- MACHINE_OCCURENCE ↔ MACHINE_STEPS --------------------
+MachineOccurence.hasMany(MachineSteps, {
+  foreignKey: "occuranceMachineId",
+  as: "steps",
+  onDelete: "CASCADE",
+  onUpdate: "CASCADE",
+});
+
+MachineSteps.belongsTo(MachineOccurence, {
+  foreignKey: "occuranceMachineId",
+  as: "occurrence",
+  onDelete: "CASCADE",
+  onUpdate: "CASCADE",
+});
+

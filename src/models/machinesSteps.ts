@@ -5,10 +5,11 @@ import { sequelize } from "@/database/db.config";
 interface MachineStepsAttributes {
     id: string;
     machineId?: string;
-    stepsRecord?: any[];
+    stepsRecord?: any[] | null;
     stepsId?: string;
     taskId?: string;
     totaltimer?: string;
+    occuranceMachineId?:string | null;
 }
 
 
@@ -22,6 +23,7 @@ export class MachineSteps extends Model<MachineStepsAttributes, MachineStepsCrea
     public stepsRecord?: any[];
     public stepsId?: string;
     public totaltimer?: string;
+    public occuranceMachineId?:string | null;
 
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
@@ -56,9 +58,20 @@ MachineSteps.init(
             onDelete: "CASCADE",
             onUpdate: "CASCADE",
         },
+        occuranceMachineId: {
+            type: DataTypes.UUID,
+            allowNull: true,
+            field: "occurance_MachineId", // 👈 new column
+            references: {
+                model: "Machineoccurence",
+                key: "id",
+            },
+            onDelete: "CASCADE",
+            onUpdate: "CASCADE",
+        },
         stepsRecord: {
             type: DataTypes.JSON,
-            allowNull: false
+            allowNull: false,
         },
         totaltimer:{
             type:DataTypes.STRING

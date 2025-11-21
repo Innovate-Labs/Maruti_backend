@@ -153,7 +153,7 @@ export const taskServices = {
   }
 },
 
-   updatedTaskStatus: async(taskId:any,status:any)=>{
+   updatedTaskStatus: async(taskId:any,status:any,)=>{
       const result = await Task.update(
         { status },
         {
@@ -202,7 +202,16 @@ console.log('KKKKKKKKK',updated)
 
 
 
-}
+},
+UpdateOccuranceStatus: async(occuranceMachineId:any,status:any)=>{
+      const result = await MachineSteps.update(
+        { occuranceMachineId },
+        {
+          where: { occuranceMachineId },
+        }
+      );
+      return result;
+   }
 
 }
 

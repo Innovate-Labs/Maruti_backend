@@ -268,5 +268,58 @@ export const MachineController = {
       error,
     });
   }
+},
+   
+ MachineCriticalityLevels : async (req: Request, res: Response) => {
+     try {
+      const data = await MachineServices.MachineServices.MachineCriticalityLevels();
+      if (!data) {
+        return ResponseData.ResponseHelpers.SetErrorResponse(
+          "Error in data fetching",
+          res,
+          StatusCode.BAD_REQUEST
+        );
+      }
+      return ResponseData.ResponseHelpers.SetSuccessResponse(data, res, StatusCode.OK);
+      
+     } catch (error) {
+        console.log(error);
+        throw error;
+     }
+},
+
+MachineUpdateCriticalityLevel : async (req: Request, res: Response) => {
+  try {
+  const { id } = req.params;
+  const { stepDescription, comment, rating, parameterValue } = req.body;
+
+  const updatedData: any = {};
+  if (comment !== undefined) updatedData.comment = comment;
+  if (rating !== undefined) updatedData.rating = rating;
+  if (parameterValue !== undefined) updatedData.parameterValue = parameterValue;
+    const data = await MachineServices.MachineServices.UpdateMachineCriticalityLevel(
+        id,
+    stepDescription,
+    updatedData
+    );
+    console.log("dataaaaaa",data)
+    if (!data) {
+      return ResponseData.ResponseHelpers.SetErrorResponse(
+        "Error in updating criticality level",
+        res,
+        StatusCode.BAD_REQUEST
+      );
+    }
+    return ResponseData.ResponseHelpers.SetSuccessResponse(
+      "Criticality level updated successfully",
+      res,
+      StatusCode.OK
+    );
+  } catch (error) {
+    console.log(error)
+    throw error;
+  }
 }
+
+
 };

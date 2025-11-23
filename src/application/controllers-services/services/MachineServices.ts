@@ -253,34 +253,78 @@ getRecurringEvents: async (startRange: string, endRange: string) => {
          })
          return result
      },
+// getSpecificMachineDetails: async (id: any) => {
+//   const machineData = await MachineSteps.findOne({
+//     where: { machineId: id },
+//   });
+
+//   if (!machineData) {
+//     return null; // No record found
+//   }
+
+//   // ✅ Convert Sequelize model to plain JS object
+//   const formattedData = machineData.toJSON();
+
+//   // ✅ Parse stepsRecord safely
+//   if (formattedData.stepsRecord) {
+//     try {
+//       formattedData.stepsRecord = typeof formattedData.stepsRecord === 'string' 
+//         ? JSON.parse(formattedData.stepsRecord) 
+//         : formattedData.stepsRecord;
+//     } catch (error) {
+//       console.error("❌ Error parsing stepsRecord:", error);
+//       formattedData.stepsRecord = [];
+//     }
+//   } else {
+//     formattedData.stepsRecord = [];
+//   }
+
+//   return formattedData;
+// },
 getSpecificMachineDetails: async (id: any) => {
   const machineData = await MachineSteps.findOne({
     where: { machineId: id },
   });
 
-  if (!machineData) {
-    return null; // No record found
-  }
+  if (!machineData) return null;
 
-  // ✅ Convert Sequelize model to plain JS object
   const formattedData = machineData.toJSON();
+  function safeParseSteps(input: any) {
+  if (!input) return [];
 
-  // ✅ Parse stepsRecord safely
-  if (formattedData.stepsRecord) {
-    try {
-      formattedData.stepsRecord = typeof formattedData.stepsRecord === 'string' 
-        ? JSON.parse(formattedData.stepsRecord) 
-        : formattedData.stepsRecord;
-    } catch (error) {
-      console.error("❌ Error parsing stepsRecord:", error);
-      formattedData.stepsRecord = [];
+  let parsed = input;
+
+  // Case 1 → Already an array
+  if (Array.isArray(parsed)) return parsed;
+
+  // Case 2 → It's a JSON string or double string
+  try {
+    // Try parsing once
+    parsed = JSON.parse(parsed);
+
+    // If result is STILL a string → parse again (double encoded)
+    if (typeof parsed === "string") {
+      parsed = JSON.parse(parsed);
     }
-  } else {
-    formattedData.stepsRecord = [];
+
+    // Final safety: ensure array
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (err) {
+    console.error("❌ Error parsing stepsRecord:", err);
+    return [];
   }
+}
+
+  // ⭐ Universal safe stepsRecord parser
+  formattedData.stepsRecord = safeParseSteps(formattedData.stepsRecord);
 
   return formattedData;
 },
+
+
+
+
+
 
 UpdateMachine: async (id: string, data: any) => {
   const result = await Machine.update(data, {
@@ -333,58 +377,69 @@ getOccurrencesByRange: async (start: string, end: string) => {
     });
   },
 MachineCriticalityLevels: async () => {
-   const result = await MachineSteps.findAll({
+ const result = await MachineSteps.findAll({
     include: [
       {
         model: Machine,
         as: "machine",
         attributes: ["id", "machineName", "serialNumber"],
-      }
-    ]
+      },
+    ],
   });
 
-  let overallCriticalCount = 0;   // ⭐ GLOBAL COUNT
+  let overallCriticalCount = 0;
 
   const formatted = result.map((item: any) => {
     const plain = item.toJSON();
+function safeParseSteps(input: any): any[] {
+  if (!input) return [];
 
-    // --------- PARSE stepsRecord ----------
-    let steps = [];
+  let parsed = input;
 
-    try {
-      steps = plain.stepsRecord
-        ? (typeof plain.stepsRecord === "string"
-            ? JSON.parse(plain.stepsRecord)
-            : plain.stepsRecord)
-        : [];
-    } catch (err) {
-      steps = [];
+  // Case A → Already array
+  if (Array.isArray(parsed)) return parsed;
+
+  try {
+    // Parse once
+    parsed = JSON.parse(parsed);
+
+    // Case B → Still a string = double encoded → parse again
+    if (typeof parsed === "string") {
+      parsed = JSON.parse(parsed);
     }
 
-    // --------- COUNT CRITICAL ALERTS ----------
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (err) {
+    console.error("❌ Error parsing stepsRecord:", err);
+    return [];
+  }
+}
+    // ⭐ Always parse safely
+    const steps = safeParseSteps(plain.stepsRecord);
+
+    // ⭐ Now guaranteed to be an array → filter is safe
     const criticalCount = steps.filter(
-      (s: any) => s.rating === 1 || s.rating === 2
+      (s: any) => s.rating === 4 || s.rating === 5
     ).length;
 
-    // Add to global count
     overallCriticalCount += criticalCount;
 
     return {
       ...plain,
       stepsRecord: steps,
-      criticalCount,   // machine-level count
+      criticalCount,
     };
   });
 
   return {
     machines: formatted,
-    overallCriticalCount,   // ⭐ total of all machines
-  }
+    overallCriticalCount,
+  };
 },
 UpdateMachineCriticalityLevel: async (
   id: string,
   stepDescription: string,
-  updatedData: { comment?: string; rating?: number; parameterValue?: string }
+  updatedData: { comment?: string; rating?: any; parameterValue?: string }
 ) => {
   try {
     // 1️⃣ Fetch row from DB

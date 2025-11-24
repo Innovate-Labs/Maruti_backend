@@ -7,6 +7,7 @@ import * as technicianController from './TechnicianController'
 import * as machineController from './MachineController'
 import * as commonController from './CommonController'
 import * as taskController from './TaskController'
+import * as userController from './UserController'
 export  {
     authController,
     plantController,
@@ -16,5 +17,6 @@ export  {
     technicianController,
     machineController,
     commonController,
-    taskController
+    taskController,
+    userController
 }

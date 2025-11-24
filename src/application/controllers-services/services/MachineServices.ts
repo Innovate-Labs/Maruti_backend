@@ -416,11 +416,18 @@ function safeParseSteps(input: any): any[] {
 }
     // ⭐ Always parse safely
     const steps = safeParseSteps(plain.stepsRecord);
+    console.log("🔍 RAW stepsRecord:", plain.stepsRecord);
+console.log("🔍 PARSED steps:", steps);
 
     // ⭐ Now guaranteed to be an array → filter is safe
     const criticalCount = steps.filter(
-      (s: any) => s.rating === 4 || s.rating === 5
+      (s: any) => s.rating === 4 || s.rating === 5 &&
+      s.panelType !== "Unknown" &&
+    s.stepDescription.trim() !== ""
     ).length;
+
+    console.log("🔍 Critical Steps:", criticalCount);
+console.log("🔢 COUNT =", criticalCount);
 
     overallCriticalCount += criticalCount;
 
@@ -441,21 +448,49 @@ UpdateMachineCriticalityLevel: async (
   stepDescription: string,
   updatedData: { comment?: string; rating?: any; parameterValue?: string }
 ) => {
-  try {
-    // 1️⃣ Fetch row from DB
+ try {
     const record = await MachineSteps.findOne({ where: { id } });
 
     if (!record) {
       return { success: false, message: "Record not found" };
     }
 
-    // 2️⃣ Read raw string from DB
-    const rawSteps:any = record.get("stepsRecord");
+    const rawSteps: any = record.get("stepsRecord");
 
-    // 3️⃣ Convert string → array
-    let steps = JSON.parse(rawSteps);
+    function safeParseSteps(raw: any) {
+  try {
+    // If already array → return as is
+    if (Array.isArray(raw)) return raw;
 
-    // 4️⃣ Find step
+    // If already object → convert object → array
+    if (typeof raw === "object" && raw !== null) {
+      return Object.values(raw);
+    }
+
+    // If string → parse once
+    let parsed = JSON.parse(raw);
+
+    // If parsing gives string again → parse twice
+    if (typeof parsed === "string") {
+      parsed = JSON.parse(parsed);
+    }
+
+    // If parsed object instead of array
+    if (!Array.isArray(parsed)) {
+      return Object.values(parsed);
+    }
+
+    return parsed;
+  } catch (err) {
+    console.log("SAFE PARSE FAILED:", err);
+    return [];
+  }
+}
+    // ⭐ Safe parsing
+    const steps = safeParseSteps(rawSteps);
+
+    console.log("Parsed steps:", steps);
+
     const stepIndex = steps.findIndex(
       (s: any) => s.stepDescription.trim() === stepDescription.trim()
     );
@@ -464,10 +499,13 @@ UpdateMachineCriticalityLevel: async (
       return { success: false, message: "Step not found" };
     }
 
-    // 5️⃣ Update JSON
-    steps[stepIndex] = { ...steps[stepIndex], ...updatedData };
+    // ⭐ Update values
+    steps[stepIndex] = {
+      ...steps[stepIndex],
+      ...updatedData,
+    };
 
-    // 6️⃣ Save back — RAW QUERY BYPASS (always works)
+    // ⭐ Save back
     await MachineSteps.update(
       { stepsRecord: JSON.stringify(steps) as any },
       { where: { id } }
@@ -476,7 +514,7 @@ UpdateMachineCriticalityLevel: async (
     return {
       success: true,
       message: "Step updated successfully",
-      updatedStep: steps[stepIndex]
+      updatedStep: steps[stepIndex],
     };
 
   } catch (error) {

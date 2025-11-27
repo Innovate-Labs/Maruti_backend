@@ -32,6 +32,7 @@ export const connectDB = async () => {
     console.log("✅ Database connected successfully");
 
     await sequelize.sync({ force: true });
+    
     console.log("🗂️ Tables synchronized successfully!");
   } catch (error) {
     console.error("❌ Unable to connect to database:", error);

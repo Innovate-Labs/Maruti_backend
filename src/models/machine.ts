@@ -12,6 +12,7 @@ interface MachineAttributes {
     lineId?: string;
     estimate_check?: string;
     firstServices?: Date;
+    nextEventDate?: any;
 }
 
 
@@ -26,7 +27,8 @@ export class Machine extends Model<MachineAttributes, MachineCreationAttributes>
     public plantId?: string;
     public shopId?: string;
     public lineId?: string;
-    public firstServices?: Date
+    public firstServices?: Date;
+    public nextEventDate?: any;
 
 
     public readonly createdAt!: Date;
@@ -93,7 +95,11 @@ Machine.init(
         firstServices: {
             type: DataTypes.DATE,
             allowNull: true,  // ✅ allows saving without a value
-        }
+        },
+        nextEventDate: {
+        type: DataTypes.DATE,
+        allowNull: true,
+}
 
     },
     {

@@ -35,4 +35,16 @@ router.delete("/delete-machine/:id",
    machineController.MachineController.DeleteMachine
 )
 
+router.get("/machine-calendar-view",
+    machineController.MachineController.GetMachineOccurrences
+)
+
+router.get("/machine-criticality-levels",
+    machineController.MachineController.MachineCriticalityLevels
+)
+
+router.post("/update-machine-criticality/:id",
+    machineController.MachineController.MachineUpdateCriticalityLevel
+)
+
 export default router;

@@ -7,7 +7,7 @@ import * as TechnicianServices from './TechnicianServices'
 import * as MachineServices from './MachineServices'
 import * as CommonServices from './CommonServices'
 import * as TaskServices from './TaskServices'
-
+import * as UserServices from './UserServices'
 
 export  {
   authservices,
@@ -18,5 +18,6 @@ export  {
   TechnicianServices,
   MachineServices,
   CommonServices,
-  TaskServices
+  TaskServices,
+  UserServices
 }

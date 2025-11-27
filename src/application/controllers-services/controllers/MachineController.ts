@@ -9,7 +9,7 @@ export const MachineController = {
       const {
         machineName,
         serialNumber,
-        services_frequency,
+        servicesFrequency,
         plant_id,
         shop_id,
         line_id,
@@ -37,6 +37,13 @@ export const MachineController = {
           StatusCode.BAD_REQUEST
         );
       }
+      const machinedata = JSON.parse(JSON.stringify(data));
+      // console.log(machinedata)
+        await MachineServices.MachineServices.generateMachineOccurrences(
+      machinedata.id,
+      first_services,
+      servicesFrequency
+    );
       return ResponseData.ResponseHelpers.SetSuccessResponse(
         data,
         res,
@@ -49,7 +56,20 @@ export const MachineController = {
   },
   GetAllMachine: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const data = await MachineServices.MachineServices.allMachine();
+    //   const data = await MachineServices.MachineServices.allMachine();
+        const { start, end } = req.query;
+
+    if (!start || !end) {
+      return ResponseData.ResponseHelpers.SetErrorResponse(
+        "Start and end date are required",
+        res,
+        StatusCode.BAD_REQUEST
+      );
+    }
+        const data = await MachineServices.MachineServices.getRecurringEvents(
+      start as string,
+      end as string
+    );
       if (!data) {
         ResponseData.ResponseHelpers.SetErrorResponse(
           "Unable to get data",
@@ -219,4 +239,87 @@ export const MachineController = {
       throw error;
     }
   },
+
+  GetMachineOccurrences: async (req: Request, res: Response) => {
+  try {
+    const { start, end } = req.query;
+
+    if (!start || !end) {
+      return res.status(400).json({
+        success: false,
+        message: "start and end date are required",
+      });
+    }
+
+    const occurrences = await MachineServices.MachineServices.getOccurrencesByRange(
+      start as string,
+      end as string
+    );
+
+    return res.status(200).json({
+      success: true,
+      data: occurrences,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+      error,
+    });
+  }
+},
+   
+ MachineCriticalityLevels : async (req: Request, res: Response) => {
+     try {
+      const data = await MachineServices.MachineServices.MachineCriticalityLevels();
+      if (!data) {
+        return ResponseData.ResponseHelpers.SetErrorResponse(
+          "Error in data fetching",
+          res,
+          StatusCode.BAD_REQUEST
+        );
+      }
+      return ResponseData.ResponseHelpers.SetSuccessResponse(data, res, StatusCode.OK);
+      
+     } catch (error) {
+        console.log(error);
+        throw error;
+     }
+},
+
+MachineUpdateCriticalityLevel : async (req: Request, res: Response) => {
+  try {
+  const { id } = req.params;
+  const { stepDescription, comment, rating, parameterValue } = req.body;
+
+  const updatedData: any = {};
+  if (comment !== undefined) updatedData.comment = comment;
+  if (rating !== undefined) updatedData.rating = rating;
+  if (parameterValue !== undefined) updatedData.parameterValue = parameterValue;
+    const data = await MachineServices.MachineServices.UpdateMachineCriticalityLevel(
+        id,
+    stepDescription,
+    updatedData
+    );
+    console.log("dataaaaaa",data)
+    if (!data) {
+      return ResponseData.ResponseHelpers.SetErrorResponse(
+        "Error in updating criticality level",
+        res,
+        StatusCode.BAD_REQUEST
+      );
+    }
+    return ResponseData.ResponseHelpers.SetSuccessResponse(
+      "Criticality level updated successfully",
+      res,
+      StatusCode.OK
+    );
+  } catch (error) {
+    console.log(error)
+    throw error;
+  }
+}
+
+
 };

@@ -7,7 +7,8 @@ interface TasksAttributes {
     technicianId?: string;
     status?: string;
     machineId?: string;
-    currentDate?: Date;
+    currentDate?: any;
+    originalDate?: Date;
 }
 
 
@@ -19,7 +20,8 @@ export class Task extends Model<TasksAttributes, MachineStepsCreationAttributes>
     public technicianId?: string;
     public status?: string;
     public machineId?: string;
-    public currentDate?: Date
+    public currentDate?: any;
+    public originalDate?: Date;
 
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
@@ -61,9 +63,7 @@ Task.init(
         currentDate: {
             type: DataTypes.DATE,
             allowNull: false
-        }
-
-
+        },
     },
     {
         sequelize,

@@ -96,46 +96,64 @@ export const taskServices = {
 
       return task
    },
-   AlreadyassignedTask: async(machineId:any)=>{
+   AlreadyassignedTask: async(machineId:any,currentDate:any)=>{
        const machine = await Task.findOne({
         where:{
-           machineId:machineId
+           machineId:machineId,
+           currentDate:currentDate
         }
        })
 
        return machine
    },
-   UpdateNewTechnicianDetails: async(technicianId:any,machineId:any,currentDate:any)=>{
-      try {
-    // Step 1: Run update query
+  //  UpdateNewTechnicianDetails: async(technicianId:any,machineId:any,currentDate:any)=>{
+  //     try {
+  //   // Step 1: Run update query
+  //   const [affectedRows] = await Task.update(
+  //     { technicianId , currentDate }, // ✅ maps to DB column 'technician_id'
+  //     {
+  //       where: { machineId,currentDate }, // ✅ maps to 'machine_id'
+  //     }
+  //   );
+
+  //   // Step 2: Handle no matching record
+  //   if (affectedRows === 0) {
+  //     console.log("⚠️ No task found for the provided machineId.");
+  //     return null;
+  //   }
+
+  //   // Step 3: Fetch updated record (MySQL does not support `returning`)
+  //   const updatedTask = await Task.findOne({ where: { machineId } });
+
+  //   if (!updatedTask) {
+  //     console.log("⚠️ Task not found after update.");
+  //     return null;
+  //   }
+
+  //   return updatedTask;
+  // } catch (error) {
+  //   console.error("❌ Error in UpdateNewTechnicianDetails:", error);
+  //   throw error;
+  // }
+  //  },
+  UpdateNewTechnicianDetails: async(technicianId:any, machineId:any, currentDate:any) => {
+  try {
     const [affectedRows] = await Task.update(
-      { technicianId , currentDate }, // ✅ maps to DB column 'technician_id'
-      {
-        where: { machineId }, // ✅ maps to 'machine_id'
-      }
+      { technicianId },
+      { where: { machineId, currentDate } }
     );
 
-    // Step 2: Handle no matching record
-    if (affectedRows === 0) {
-      console.log("⚠️ No task found for the provided machineId.");
-      return null;
-    }
+    if (affectedRows === 0) return null;
 
-    // Step 3: Fetch updated record (MySQL does not support `returning`)
-    const updatedTask = await Task.findOne({ where: { machineId } });
+    return await Task.findOne({ where: { machineId, currentDate } });
 
-    if (!updatedTask) {
-      console.log("⚠️ Task not found after update.");
-      return null;
-    }
-
-    return updatedTask;
   } catch (error) {
-    console.error("❌ Error in UpdateNewTechnicianDetails:", error);
+    console.error("❌ UpdateNewTechnicianDetails Error:", error);
     throw error;
   }
-   },
-   updatedTaskStatus: async(taskId:any,status:any)=>{
+},
+
+   updatedTaskStatus: async(taskId:any,status:any,)=>{
       const result = await Task.update(
         { status },
         {
@@ -143,5 +161,57 @@ export const taskServices = {
         }
       );
       return result;
-   }
+   },
+   UpdateNextEventDate: async(machineId:any, currentDate:any) => {
+
+    try {
+        const machine = await Machine.findOne({ where: { id: machineId } });
+console.log('KLJUYTRE',machine)
+   const machinedata  = JSON.parse(JSON.stringify(machine))
+   console.log('MMMMMMM',machinedata)
+  if (!machine) return;
+function computeNextEventDate(date: string, freq: string) {
+  const base = dayjs(date, "YYYY-MM-DD HH:mm:ss");
+
+  switch (freq.toLowerCase()) {
+    case "weekly": return base.add(7, "day").format("YYYY-MM-DD HH:mm:ss");
+    case "bi-weekly": 
+    case "biweekly": return base.add(14, "day").format("YYYY-MM-DD HH:mm:ss");
+    case "monthly": return base.add(1, "month").format("YYYY-MM-DD HH:mm:ss");
+    case "quarterly": return base.add(3, "month").format("YYYY-MM-DD HH:mm:ss");
+    case "yearly": return base.add(12, "month").format("YYYY-MM-DD HH:mm:ss");
+    default: return base.format("YYYY-MM-DD HH:mm:ss");
+  }
 }
+
+  const freq = machinedata.servicesFrequency;
+  const nextDate = currentDate;
+
+  if (!nextDate) return;
+
+ const updated = await Machine.update(
+    { nextEventDate: nextDate },
+    { where: { id: machineId } }
+  );
+console.log('KKKKKKKKK',updated)
+  return nextDate;
+    } catch (error) {
+      console.log(error)
+    }
+
+
+
+
+},
+UpdateOccuranceStatus: async(occuranceMachineId:any,status:any)=>{
+      const result = await MachineSteps.update(
+        { occuranceMachineId },
+        {
+          where: { occuranceMachineId },
+        }
+      );
+      return result;
+   }
+
+}
+

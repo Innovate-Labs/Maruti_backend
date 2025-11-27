@@ -7,15 +7,28 @@ import bcrypt from "bcryptjs";
 
 
 export const UserController = {
-    Login:async(req: Request, res: Response, next: NextFunction)=>{
-         const {email,password}= req.body
-         console.log('ATTTYGHUUUU',email,password)
-         const user = await UserServices.UserServices.getUserLogin(email,password)
-        if (!user) {
-            return ResponseData.ResponseHelpers.SetErrorResponse("Invalid email", res, StatusCode.BAD_REQUEST)
-        }
-        return ResponseData.ResponseHelpers.SetSuccessResponse(user, res, StatusCode.OK)
-    },
+  Login: async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+
+  const response = await UserServices.UserServices.getUserLogin(email, password);
+
+  // ❌ WRONG: if (!response)
+  // ✔️ Correct check:
+  if (!response.success) {
+    return ResponseData.ResponseHelpers.SetErrorResponse(
+      response.message,
+      res,
+      StatusCode.BAD_REQUEST
+    );
+  }
+
+  // If success, return response
+  return ResponseData.ResponseHelpers.SetSuccessResponse(
+    response,
+    res,
+    StatusCode.OK
+  );
+},
 
     createUser:async(req: Request, res: Response, next: NextFunction)=>{
         const {name,email,password,role}= req.body

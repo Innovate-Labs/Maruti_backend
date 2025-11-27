@@ -10,42 +10,38 @@ export const UserServices = {
         return result
     },
 
-getUserLogin: async(email:any,password:any)=>{
-        console.log(email,password)
-         const users = await User.findOne(
-            { 
-                attributes: ['id', 'name', 'email', 'password', 'role'],
-                where: { email } });
-        //  console.log("ASAEFDDDAAAAAA",user)
+getUserLogin: async (email:any, password:any) => {
+  const userData = await User.findOne({
+    attributes: ["id", "name", "email", "password", "role"],
+    where: { email },
+  });
 
-         const user = JSON.parse(JSON.stringify(users));
-
-  if (!user) {
+  if (!userData) {
     return { success: false, message: "Invalid email or password" };
   }
 
-  // 2. Compare entered password with hashed password
+  const user = JSON.parse(JSON.stringify(userData));
+
   const isMatch = await bcrypt.compare(password, user.password);
 
   if (!isMatch) {
     return { success: false, message: "Invalid email or password" };
   }
 
-  // 3. Remove password from return object
-//   const plainUser = user.get({ plain: true });
-//   delete plainUser.password;
-    const token = jwt.sign(
-      { id: user.id, email: user.email },   // payload
-      process.env.JWT_SECRET || "mysecretkey",        // secret
-      { expiresIn: "7d" }                             // expiry
-    );
-    delete user.password;
+  const token = jwt.sign(
+    { id: user.id, email: user.email },
+    process.env.JWT_SECRET || "mysecretkey",
+    { expiresIn: "7d" }
+  );
+
+  delete user.password;
 
   return {
     success: true,
     message: "Login successful",
     token,
-    user: user,
+    user,
   };
-    }
+}
+
 }

@@ -235,7 +235,7 @@ getRecurringEvents: async (startRange: string, endRange: string) => {
             where:{serialNumber},
             include:{
               model:MachineSteps,
-              as:"machinesSteps",
+              as:"machineSteps",
               include:[
                 {
                   model:Task,

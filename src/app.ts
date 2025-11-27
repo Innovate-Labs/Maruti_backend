@@ -28,7 +28,7 @@ app.use(express.urlencoded({extended: true}));
 // app.use(cors({origin:' * ',credentials:true}));
 app.use(
   cors({
-    origin: "https://checkar-hqehgceghnf9dtbg.centralindia-01.azurewebsites.net", 
+    origin: "*", 
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })

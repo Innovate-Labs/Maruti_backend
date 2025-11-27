@@ -31,7 +31,7 @@ export const connectDB = async () => {
     await sequelize.authenticate();
     console.log("✅ Database connected successfully");
 
-    await sequelize.sync({ alter: true });
+    // await sequelize.sync({ alter: true });
 
     console.log("🗂️ Tables synchronized successfully!");
   } catch (error) {

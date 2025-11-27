@@ -28,11 +28,13 @@ app.use(express.urlencoded({extended: true}));
 // app.use(cors({origin:' * ',credentials:true}));
 app.use(
   cors({
-    origin: "*", 
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
+app.options("*", cors());
 app.use(morgan('dev'))
 connectDB()  
   app.get('/', (req, res) => {

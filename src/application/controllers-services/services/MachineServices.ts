@@ -283,7 +283,7 @@ getRecurringEvents: async (startRange: string, endRange: string) => {
 // },
 getSpecificMachineDetails: async (id: any) => {
   const machineData = await MachineSteps.findOne({
-    where: { machineId: id },
+    where: { id: id },
   });
 
   if (!machineData) return null;
@@ -384,6 +384,19 @@ MachineCriticalityLevels: async () => {
         as: "machine",
         attributes: ["id", "machineName", "serialNumber"],
       },
+      {
+        model: Task,
+        as: "task",
+        attributes: ["id", "status", "currentDate","technicianId"],
+        include: [
+          {
+            model: Technician,
+            as: "technician",
+            attributes: ["id", "name", "employeeId"],
+          },
+        ]
+        
+      }
     ],
   });
 
